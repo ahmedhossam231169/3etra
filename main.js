@@ -430,8 +430,20 @@
     }
   }
 
-  function open(el){ el && el.setAttribute('aria-hidden', 'false'); }
-  function close(el){ el && el.setAttribute('aria-hidden', 'true'); }
+  function open(el){
+    if(!el) return;
+    el.setAttribute('aria-hidden', 'false');
+    el.removeAttribute('inert');
+  }
+  function close(el){
+    if(!el) return;
+    const active = document.activeElement;
+    if(active && el.contains(active)){
+      active.blur();
+    }
+    el.setAttribute('aria-hidden', 'true');
+    el.setAttribute('inert', '');
+  }
 
   function openCart(){ 
     open(cartModal);
