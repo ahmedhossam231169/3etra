@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+  <title>حجز طاولة - 3etra</title>
+  <link href="src/output.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, 
+        oklch(76.9% 0.188 70.08 / 0.85), 
+        oklch(68% 0.20 70 / 0.85)
+      );
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+    .container { 
+      max-width: 800px; 
+      margin: 0 auto; 
+    }
+    .return-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: oklch(76.9% 0.188 70.08 / 0.85);
+      text-decoration: none;
+      font-weight: 700;
+      padding: 0.75rem 1.5rem;
+      background: black;
+      border-radius: 10px;
+      border: 1px solid oklch(76.9% 0.188 70.08 / 0.5);
+      box-shadow: 0 4px 12px rgba(251,191,36,0.3);
+      transition: all 0.3s ease;
+    }
+    .return-btn:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(251,191,36,0.4);
+    }
+    .card { 
+      background: linear-gradient(180deg, rgba(0,0,0,0.95), rgba(0,0,0,0.98)); 
+      border: 1px solid rgba(255,255,255,0.08); 
+      border-radius: 16px; 
+      padding: 2rem; 
+      box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+    }
+    h1 {
+      color: var(--color-amber-500);
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-size: 2rem;
+    }
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #fff;
+      font-weight: 600;
+      opacity: 0.9;
+    }
+    input, select, textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #fff;
+      border-radius: 10px;
+      padding: 0.75rem;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--color-amber-500);
+      background: rgba(255,255,255,0.06);
+    }
+    input::placeholder, textarea::placeholder {
+      color: rgba(255,255,255,0.5);
+    }
+    .btn {
+      background: var(--color-amber-500);
+      color: #000;
+      padding: 0.75rem 2rem;
+      border-radius: 10px;
+      font-weight: 700;
+      border: 1px solid oklch(76.9% 0.188 70.08 / 0.5);
+      cursor: pointer;
+      width: 100%;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+    .btn:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+    }
+    .btn:active {
+      transform: translateY(0);
+    }
+    .success-msg {
+      background: rgba(34, 197, 94, 0.2);
+      border: 1px solid rgba(34, 197, 94, 0.5);
+      color: #4ade80;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      display: none;
+    }
+    .success-msg.show {
+      display: block;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    /* Menu Modal Styles */
+    .menu-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.9);
+      z-index: 1000;
+      overflow-y: auto;
+      padding: 2rem 1rem;
+    }
+    .menu-modal.show {
+      display: block;
+    }
+    .menu-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: linear-gradient(180deg, rgba(0,0,0,0.98), rgba(0,0,0,0.95));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 2rem;
+      position: relative;
+    }
+    .menu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    .menu-header h2 {
+      color: var(--color-amber-500);
+      margin: 0;
+    }
+    .close-menu {
+      background: rgba(239,68,68,0.2);
+      color: #ef4444;
+      border: 1px solid rgba(239,68,68,0.3);
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .menu-item-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+    .menu-item-card:hover {
+      transform: translateY(-4px);
+    }
+    .menu-item-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .menu-item-card .content {
+      padding: 1rem;
+    }
+    .menu-item-card h3 {
+      color: #fff;
+      margin: 0 0 0.5rem 0;
+      font-size: 1.1rem;
+    }
+    .menu-item-card .price {
+      color: var(--color-amber-500);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .menu-item-card button {
+      width: 100%;
+      background: var(--color-amber-500);
+      color: #000;
+      border: none;
+      padding: 0.5rem;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .selected-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+    }
+    .selected-item .item-info {
+      flex: 1;
+    }
+    .selected-item .item-name {
+      color: #fff;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    .selected-item .item-details {
+      color: rgba(255,255,255,0.7);
+      font-size: 0.9rem;
+    }
+    .selected-item .item-price {
+      color: var(--color-amber-500);
+      font-weight: 700;
+      margin: 0 1rem;
+    }
+    .selected-item .remove-item {
+      background: rgba(239,68,68,0.2);
+      color: #ef4444;
+      border: 1px solid rgba(239,68,68,0.3);
+      border-radius: 6px;
+      padding: 0.25rem 0.75rem;
+      cursor: pointer;
+    }
+    @media (max-width: 768px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+      .card {
+        padding: 1.5rem;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
+      .menu-content {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="margin-bottom: 1.5rem; display: flex; align-items: center;">
+      <a href="insex.html" class="return-btn">
+        ← العودة للصفحة الرئيسية
+      </a>
+    </div>
+    <div class="card">
+      <h1>حجز طاولة</h1>
+      
+      <div id="success-msg" class="success-msg">
+        تم إرسال طلب الحجز بنجاح! سنتواصل معك قريباً.
+      </div>
+
+      <form id="reservation-form">
+        <div class="form-group">
+          <label for="res-name">الاسم الكامل *</label>
+          <input id="res-name" type="text" required placeholder="أدخل اسمك الكامل" />
+        </div>
+
+        <div class="form-group">
+          <label for="res-phone">رقم الهاتف *</label>
+          <input id="res-phone" type="tel" required placeholder="01xxxxxxxxx" />
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="res-date">التاريخ *</label>
+            <input id="res-date" type="date" required />
+          </div>
+
+          <div class="form-group">
+            <label for="res-time">الوقت *</label>
+            <input id="res-time" type="time" required />
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="res-guests">عدد الأشخاص *</label>
+            <input id="res-guests" type="number" min="1" max="20" required placeholder="مثال: 4" />
+          </div>
+
+          <div class="form-group">
+            <label for="res-branch">الفرع *</label>
+            <select class="bg-black" id="res-branch" required>
+              <option class="bg-black" value="">اختر الفرع</option>
+              <option class="bg-black" value="فرع ميامي" data-branch-id="branch-1">فرع ميامي</option>
+              <option class="bg-black" value="فرع سبورتنج" data-branch-id="branch-2">فرع سبورتنج</option>
+              <option class="bg-black" value="فرع سموحة" data-branch-id="branch-3">فرع سموحة</option>
+              <option class="bg-black" value="فرع دمنهور" data-branch-id="branch-4">فرع دمنهور</option>
+            </select>
+            <div id="branch-status-msg" style="margin-top: 0.5rem; font-size: 0.9rem; display: none;"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>اختر طلباتك (اختياري)</label>
+          <button type="button" id="open-menu-btn" class="btn" style="background: rgba(251,191,36,0.2); color: var(--color-amber-500); margin-bottom: 1rem;">
+            📋 فتح القائمة
+          </button>
+          <div id="selected-items" style="min-height: 50px; padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 10px; border: 1px solid rgba(255,255,255,0.08);">
+            <div style="opacity: 0.7; text-align: center;">لم يتم اختيار أي عناصر</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="res-notes">ملاحظات إضافية (اختياري)</label>
+          <textarea id="res-notes" rows="3" placeholder="أي طلبات خاصة أو ملاحظات"></textarea>
+        </div>
+
+        <button type="submit" class="btn">تأكيد الحجز</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Menu Modal -->
+  <div id="menu-modal" class="menu-modal">
+    <div class="menu-content">
+      <div class="menu-header">
+        <h2>القائمة</h2>
+        <button class="close-menu" id="close-menu-btn">✕ إغلاق</button>
+      </div>
+      <div id="menu-grid" class="menu-grid"></div>
+    </div>
+  </div>
+
+  <script>
+    // Cart for reservation items
+    let reservationCart = [];
+
+    // Set minimum date to today
+    const dateInput = document.getElementById('res-date');
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.setAttribute('min', today);
+
+    // Menu modal controls
+    const menuModal = document.getElementById('menu-modal');
+    const openMenuBtn = document.getElementById('open-menu-btn');
+    const closeMenuBtn = document.getElementById('close-menu-btn');
+    const menuGrid = document.getElementById('menu-grid');
+    const selectedItemsDiv = document.getElementById('selected-items');
+
+    openMenuBtn.addEventListener('click', () => {
+      menuModal.classList.add('show');
+      loadMenu();
+    });
+
+    closeMenuBtn.addEventListener('click', () => {
+      menuModal.classList.remove('show');
+    });
+
+    menuModal.addEventListener('click', (e) => {
+      if (e.target === menuModal) {
+        menuModal.classList.remove('show');
+      }
+    });
+
+    // Load products from localStorage
+    function loadMenu() {
+      const products = JSON.parse(localStorage.getItem('products') || '[]');
+      menuGrid.innerHTML = '';
+
+      if (products.length === 0) {
+        menuGrid.innerHTML = '<div style="color: #fff; text-align: center; grid-column: 1/-1;">لا توجد منتجات متاحة</div>';
+        return;
+      }
+
+      products.forEach(product => {
+        const defaultPrice = product.sizes && product.sizes.length > 0 ? product.sizes[0].price : 120;
+        const sizesJson = JSON.stringify(product.sizes || []);
+        
+        const card = document.createElement('div');
+        card.className = 'menu-item-card';
+        card.innerHTML = `
+          <img src="${product.image}" alt="${product.name}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23333%22 width=%22200%22 height=%22200%22/%3E%3Ctext fill=%22%23fff%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E${product.name}%3C/text%3E%3C/svg%3E'">
+          <div class="content">
+            <h3>${product.name}</h3>
+            <div class="price">${defaultPrice} L.E</div>
+            <button class="add-to-reservation-cart" 
+              data-name="${product.name}" 
+              data-price="${defaultPrice}" 
+              data-image="${product.image}"
+              data-description="${product.description || ''}"
+              data-sizes='${sizesJson}'>
+              أضف
+            </button>
+          </div>
+        `;
+        menuGrid.appendChild(card);
+      });
+
+      // Add event listeners to add buttons
+      document.querySelectorAll('.add-to-reservation-cart').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const data = {
+            name: btn.dataset.name,
+            price: parseFloat(btn.dataset.price),
+            image: btn.dataset.image,
+            description: btn.dataset.description,
+            sizes: JSON.parse(btn.dataset.sizes || '[]'),
+            size: btn.dataset.sizes ? JSON.parse(btn.dataset.sizes)[0]?.label || 'وسط' : 'وسط',
+            qty: 1
+          };
+          addToReservationCart(data);
+        });
+      });
+    }
+
+    // Add item to reservation cart
+    function addToReservationCart(item) {
+      const existing = reservationCart.find(i => i.name === item.name && i.size === item.size);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        reservationCart.push({...item});
+      }
+      renderSelectedItems();
+    }
+
+    // Remove item from reservation cart
+    function removeFromReservationCart(index) {
+      reservationCart.splice(index, 1);
+      renderSelectedItems();
+    }
+
+    // Render selected items
+    function renderSelectedItems() {
+      if (reservationCart.length === 0) {
+        selectedItemsDiv.innerHTML = '<div style="opacity: 0.7; text-align: center;">لم يتم اختيار أي عناصر</div>';
+        return;
+      }
+
+      let total = 0;
+      selectedItemsDiv.innerHTML = reservationCart.map((item, index) => {
+        const itemTotal = item.price * item.qty;
+        total += itemTotal;
+        return `
+          <div class="selected-item">
+            <div class="item-info">
+              <div class="item-name">${item.name} (${item.size})</div>
+              <div class="item-details">الكمية: ${item.qty}</div>
+            </div>
+            <div class="item-price">${itemTotal} L.E</div>
+            <button class="remove-item" onclick="removeFromReservationCart(${index})">✕</button>
+          </div>
+        `;
+      }).join('') + `
+        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <strong style="color: var(--color-amber-500);">المجموع:</strong>
+            <strong style="color: var(--color-amber-500); font-size: 1.2rem;">${total} L.E</strong>
+          </div>
+        </div>
+      `;
+    }
+
+    // Make removeFromReservationCart available globally
+    window.removeFromReservationCart = removeFromReservationCart;
+
+    // Auto-fill from profile if available
+    function loadProfileData() {
+      try {
+        const session = JSON.parse(localStorage.getItem('userSession') || '{}');
+        const profile = JSON.parse(localStorage.getItem('profile') || '{}');
+        
+        if (profile.name || session.username) {
+          document.getElementById('res-name').value = profile.name || session.username || '';
+        }
+        if (profile.phone) {
+          document.getElementById('res-phone').value = profile.phone;
+        }
+      } catch (e) {
+        console.error('Error loading profile:', e);
+      }
+    }
+
+    // Check branch status
+    function checkBranchStatus(branchName) {
+      const branchMap = {
+        'فرع ميامي': 'branch-1',
+        'فرع سبورتنج': 'branch-2',
+        'فرع سموحة': 'branch-3',
+        'فرع دمنهور': 'branch-4'
+      };
+      
+      const branchId = branchMap[branchName];
+      if (!branchId) return true; // If branch not found, allow reservation
+      
+      const branchStatus = JSON.parse(localStorage.getItem('branchStatus') || '{}');
+      return branchStatus[branchId] !== false; // Default to open if not set
+    }
+
+    // Update branch select options based on status
+    function updateBranchOptions() {
+      const branchMap = {
+        'فرع ميامي': 'branch-1',
+        'فرع سبورتنج': 'branch-2',
+        'فرع سموحة': 'branch-3',
+        'فرع دمنهور': 'branch-4'
+      };
+      
+      const branchStatus = JSON.parse(localStorage.getItem('branchStatus') || '{}');
+      const select = document.getElementById('res-branch');
+      const options = select.querySelectorAll('option[data-branch-id]');
+      
+      options.forEach(option => {
+        const branchId = option.getAttribute('data-branch-id');
+        const isOpen = branchStatus[branchId] !== false;
+        const branchName = option.value;
+        
+        if (isOpen) {
+          option.textContent = branchName + ' ✓ (مفتوح)';
+          option.style.color = '#4ade80';
+          option.disabled = false;
+        } else {
+          option.textContent = branchName + ' ✕ (مغلق)';
+          option.style.color = '#ef4444';
+          option.disabled = false; // Still allow selection to show error message
+        }
+      });
+    }
+
+    // Show branch status message
+    function showBranchStatus(branchName) {
+      const msgDiv = document.getElementById('branch-status-msg');
+      if (!branchName) {
+        msgDiv.style.display = 'none';
+        return;
+      }
+      
+      const isOpen = checkBranchStatus(branchName);
+      if (isOpen) {
+        msgDiv.style.display = 'block';
+        msgDiv.style.color = '#4ade80';
+        msgDiv.textContent = '✓ هذا الفرع مفتوح - يمكن الحجز';
+      } else {
+        msgDiv.style.display = 'block';
+        msgDiv.style.color = '#ef4444';
+        msgDiv.textContent = '✕ هذا الفرع مغلق - لا يمكن الحجز حالياً';
+      }
+    }
+
+    // Listen to branch selection change
+    document.getElementById('res-branch').addEventListener('change', (e) => {
+      showBranchStatus(e.target.value);
+    });
+
+    // Handle form submission
+    document.getElementById('reservation-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const selectedBranch = document.getElementById('res-branch').value;
+      
+      // Check if branch is open
+      if (!checkBranchStatus(selectedBranch)) {
+        alert('عذراً، هذا الفرع مغلق حالياً ولا يمكن الحجز فيه. يرجى اختيار فرع آخر.');
+        return;
+      }
+      
+      const reservation = {
+        id: Date.now(),
+        name: document.getElementById('res-name').value.trim(),
+        phone: document.getElementById('res-phone').value.trim(),
+        date: document.getElementById('res-date').value,
+        time: document.getElementById('res-time').value,
+        guests: parseInt(document.getElementById('res-guests').value),
+        branch: document.getElementById('res-branch').value,
+        notes: document.getElementById('res-notes').value.trim(),
+        items: reservationCart.map(item => ({
+          name: item.name,
+          size: item.size,
+          qty: item.qty,
+          price: item.price
+        })),
+        total: reservationCart.reduce((sum, item) => sum + (item.price * item.qty), 0),
+        createdAt: new Date().toISOString(),
+        status: 'pending'
+      };
+
+      // Save to localStorage
+      try {
+        const existing = JSON.parse(localStorage.getItem('reservations') || '[]');
+        existing.unshift(reservation);
+        localStorage.setItem('reservations', JSON.stringify(existing.slice(0, 100)));
+      } catch (e) {
+        console.error('Error saving reservation:', e);
+        alert('حدث خطأ في حفظ الحجز. حاول مرة أخرى.');
+        return;
+      }
+
+      // Show success message
+      document.getElementById('success-msg').classList.add('show');
+      
+      // Reset form and cart
+      document.getElementById('reservation-form').reset();
+      dateInput.setAttribute('min', today);
+      reservationCart = [];
+      renderSelectedItems();
+      
+      // Reload profile data
+      setTimeout(() => {
+        loadProfileData();
+      }, 100);
+
+      // Hide success message after 5 seconds
+      setTimeout(() => {
+        document.getElementById('success-msg').classList.remove('show');
+      }, 5000);
+    });
+
+    // Load profile data on page load
+    loadProfileData();
+    
+    // Update branch options on page load
+    updateBranchOptions();
+  </script>
+</body>
+</html>
+

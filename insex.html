@@ -1,0 +1,1273 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+  <title>3etra - عترة | مطعم</title>
+  <link href="src/output.css" rel="stylesheet">
+</head>
+<body>
+  
+  <nav class="nav flex  p-4 text-black">
+    <div class="flex justify-between gap-7 items-center w-full"> 
+    <div class="webname flex justify-start"><h1 class="text-3xl font-bold text-black" data-i18n="site_name">3etra-عترة</h1></div>
+    <div class="menu-toggle-container flex justify-end"><button id="menu-toggle" aria-label="فتح القائمة" class="menu-toggle  " aria-expanded="false" aria-controls="primary-nav">
+      ☰
+    </button></div>
+    </div>
+  
+    <div id="primary-nav" class="links gap-10 flex justify-between items-center">
+      <a href="#hero-slider" class="text-xl" data-i18n="nav_home">الرئيسية</a>
+      <a href="#menu" class="text-xl" data-i18n="nav_menu">القائمة</a>
+      <a href="#about" class="text-xl" data-i18n="nav_about">حول</a>
+      <a href="reservation.html" id="reservation-link" class="text-xl">حجز طاولة</a>
+      <a href="#footer" class="text-xl" data-i18n="nav_contact">اتصل بنا</a>
+      <a href="profile.html" id="profile-link" class="text-xl" style="display: none; background: rgba(251,191,36,0.2); padding: 0.5rem 1rem; border-radius: 8px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display: inline-block; vertical-align: middle; margin-inline-end: 4px;">
+          <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z"/>
+        </svg>
+        الملف الشخصي
+      </a>
+      <a href="dashboard.html" id="dashboard-link" class="text-xl" style="background: rgba(251,191,36,0.2); padding: 0.5rem 1rem; border-radius: 8px; display: none;" data-i18n="nav_dashboard">لوحة التحكم</a>
+      <button id="orders-link" class="text-xl" style="background: rgba(251,191,36,0.2); padding: 0.5rem 1rem; border-radius: 8px; border: none; color: #000; cursor: pointer; display: none;">الطلبات</button>
+      <a href="index.html" id="login-link" class="text-xl" style="background: rgba(251,191,36,0.2); padding: 0.5rem 1rem; border-radius: 8px;" data-i18n="nav_login">تسجيل الدخول</a>
+      <button id="logout-btn" class="text-xl" style="background: rgba(239,68,68,0.2); padding: 0.5rem 1rem; border-radius: 8px; border: none; color: #000; cursor: pointer; display: none;">تسجيل الخروج</button>
+      <span id="user-info" style="padding: 0.5rem 1rem; opacity: 0.8; display: none;"></span>
+
+      
+      <button id="lang-toggle" aria-label="Toggle language" style="background:rgba(0,0,0,0.1); border:1px solid rgba(0,0,0,0.2); border-radius:8px; padding:6px 10px;">EN</button>
+    </div>
+  </nav>
+  <div class="webname flex items-center gap-4">
+    <button id="cart-button" aria-label="فتح السلة" class="cart-button">
+      <span class="cart-icon">🛒</span>
+      <span id="cart-count" class="cart-badge">0</span>
+    </button>
+  </div>
+
+  <!-- Slider Section -->
+  <section id="hero-slider" class="hero-slider  pt-10 border-blue-200" aria-label="عرض الصور">
+    <div class="slider-track" id="slider-track">
+      <!-- Slider slides will be loaded dynamically from localStorage -->
+    </div>
+    <button class="slider-btn prev" aria-label="السابق">&#10094;</button>
+    <button class="slider-btn next" aria-label="التالي">&#10095;</button>
+    <div class="slider-dots" role="tablist"></div>
+  </section>
+  
+  
+  <section id="menu" class="">
+    <h1 class="flex justify-center pt-10 pb-6">
+      <span class="text-3xl font-bold text-black text-center relative">menu</span>
+    </h1>
+    
+    <div class="menu flex gap-6 pt-3 justify-center flex-wrap">
+    
+      <div class="wishcard w-45 p-0 text-white">
+        <img class="w-full" src="/imgs/480251412_1025304616191865_8716382892094081518_n.jpg" alt="فتوته رانش">
+        <div class="p-4">
+          <h2 class="text-xl font-bold mt-2 text-center">fatota ranch </h2>
+          <div class="text-center mt-3 flex justify-between items-center">
+            <button title="Add to Cart" class="add-to-cart group cursor-pointer outline-none hover:rotate-90 duration-300" data-name="fatota ranch" data-price="120" data-image="/imgs/480251412_1025304616191865_8716382892094081518_n.jpg" data-description="ساندويتش لذيذ مع صوص رانش وخضار طازجة" data-sizes='[{"label":"صغير","price":90},{"label":"وسط","price":120},{"label":"كبير","price":150}]'>
+              <svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 24 24" class="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300">
+                <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke-width="1.5"></path>
+                <path d="M8 12H16" stroke-width="1.5"></path>
+                <path d="M12 16V8" stroke-width="1.5"></path>
+              </svg>
+            </button>
+            <span class="text-lg font-semibold  ">120 L.E</span>
+          </div>
+        </div>
+      </div>
+
+    
+      <div class="wishcard w-45 p-0 text-white">
+        <img class="w-full" src="/imgs/480771397_1015910663797927_2008338317843381204_n.jpg" alt="فتوته رانش">
+        <div class="p-4">
+          <h2 class="text-xl  font-bold mt-2 text-center"> juciy-lucy</h2>
+          <div class="text-center mt-3 flex justify-between items-center ">
+            <button title="Add to Cart" class="add-to-cart group cursor-pointer outline-none hover:rotate-90 duration-300" data-name="juciy-lucy" data-price="120" data-image="/imgs/480771397_1015910663797927_2008338317843381204_n.jpg" data-description="برغر عصير مع جبنة ذائبة ونكهات مميزة" data-sizes='[{"label":"صغير","price":95},{"label":"وسط","price":120},{"label":"كبير","price":155}]'>
+              <svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 24 24" class="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300">
+                <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke-width="1.5"></path>
+                <path d="M8 12H16" stroke-width="1.5"></path>
+                <path d="M12 16V8" stroke-width="1.5"></path>
+              </svg>
+            </button>
+            <span class="text-lg font-semibold">120 L.E</span>
+
+          </div>
+        </div>
+      </div>
+
+    
+      <div class="wishcard w-45 p-0 text-white">
+        <img class="w-full" src="/imgs/481107802_1021570963231897_1989374855717209178_n.jpg" alt="فتوته رانش">
+        <div class="p-4">
+          <h2 class="text-xl font-bold mt-2 text-center"> O-mashroom</h2>
+          <div class="text-center mt-3 flex justify-between items-center">
+            <button
+              title="Add to Cart"
+              class="add-to-cart"
+              data-name="O-mashroom"
+              data-price="120"
+              data-image="/imgs/481107802_1021570963231897_1989374855717209178_n.jpg"
+              data-description="فطر طازج مع صوص كريمي وطعم رائع"
+              data-sizes='[{"label":"صغير","price":100},{"label":"وسط","price":130},{"label":"كبير","price":160}]'
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="50px"
+                height="50px"
+                viewBox="0 0 24 24"
+                class="stroke-orange-400 fill-none"
+              >
+                <path
+                  d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                  stroke-width="1.5"
+                ></path>
+                <path d="M8 12H16" stroke-width="1.5"></path>
+                <path d="M12 16V8" stroke-width="1.5"></path>
+              </svg>
+            </button>
+            <span class="text-lg font-semibold">120 L.E</span>
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="wishcard w-45 p-0 text-white">
+        <img class="w-full" src="/imgs/481465996_1025304649525195_7944983424135789421_n.jpg" alt="فتوته رانش">
+        <div class="p-4">
+          <h2 class="text-xl font-bold mt-2 text-center"> fatota ranch</h2>
+          <div class="text-center mt-3 flex justify-between items-center">
+            <button
+              title="Add to Cart"
+              class="add-to-cart"
+              data-name="fatota ranch"
+              data-description="فطر طازج مع صوص كريمي وطعم رائع"
+              data-sizes='[{"label":"صغير","price":100},{"label":"وسط","price":130},{"label":"كبير","price":160}]'
+            
+              data-image="/imgs/481465996_1025304649525195_7944983424135789421_n.jpg"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="50px"
+                height="50px"
+                viewBox="0 0 24 24"
+                class="stroke-orange-400 fill-none"
+              >
+                <path
+                  d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                  stroke-width="1.5"
+                ></path>
+                <path d="M8 12H16" stroke-width="1.5"></path>
+                <path d="M12 16V8" stroke-width="1.5"></path>
+              </svg>
+            </button>
+            <span class="text-lg font-semibold">120 L.E</span>
+
+          </div>
+        </div>
+      </div>
+
+    
+      <div class="wishcard w-45 p-0 text-white">
+        <img class="w-full" src="/imgs/484544257_1030233462365647_5123400510061974501_n.jpg" alt="فتوته رانش">
+        <div class="p-4">
+          <h2 class="text-xl font-bold mt-2 text-center">chili-spicy </h2>
+          <div class="text-center mt-3 flex justify-between items-center">
+            <button
+              title="Add to Cart"
+              class="add-to-cart"
+              data-name="chili-spicy"
+              data-price="120"
+              data-image="/imgs/484544257_1030233462365647_5123400510061974501_n.jpg"
+              data-description="فطر طازج مع صوص كريمي وطعم رائع"
+              data-sizes='[{"label":"صغير","price":100},{"label":"وسط","price":130},{"label":"كبير","price":160}]'
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="50px"
+                height="50px"
+                viewBox="0 0 24 24"
+                class="stroke-orange-400 fill-none"
+              >
+                <path
+                  d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                  stroke-width="1.5"
+                ></path>
+                <path d="M8 12H16" stroke-width="1.5"></path>
+                <path d="M12 16V8" stroke-width="1.5"></path>
+              </svg>
+            </button>
+            <span class="text-lg font-semibold">120 L.E</span>
+          </div>
+        </div>
+      </div>
+
+    
+      <div class="wishcard w-45 p-0 text-white">
+        <img class="w-full" src="/imgs/486693153_1039004541488539_7972596017401499730_n.jpg" alt="فتوته رانش">
+        <div class="p-4">
+          <h2 class="text-xl font-bold mt-2 text-center"> Big-Boy</h2>
+          <div class="text-center mt-3 flex justify-between items-center">
+            <button
+              title="Add to Cart"
+              class="add-to-cart"
+              data-name="Big-Boy"
+              data-price="120"
+              data-image="/imgs/486693153_1039004541488539_7972596017401499730_n.jpg"
+              data-description="فطر طازج مع صوص كريمي وطعم رائع"
+              data-sizes='[{"label":"صغير","price":100},{"label":"وسط","price":130},{"label":"كبير","price":160}]'
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="50px"
+                height="50px"
+                viewBox="0 0 24 24"
+                class="stroke-orange-400 fill-none"
+              >
+                <path
+                  d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                  stroke-width="1.5"
+                ></path>
+                <path d="M8 12H16" stroke-width="1.5"></path>
+                <path d="M12 16V8" stroke-width="1.5"></path>
+              </svg>
+            </button>
+            <span class="text-lg font-semibold">120 L.E</span>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <h1 class="flex justify-center pt-10 pb-6">
+      <span class="text-3xl font-bold text-black text-center relative">appetizers</span>
+    </h1>
+    <div class="menu flex gap-6 pt-3 justify-center flex-wrap">
+    
+      <div class="wishcard w-45 p-0 text-white">
+        <img class="w-full" src="/imgs/197472.jpg" alt="فتوته رانش">
+        <div class="p-4">
+          <h2 class="text-xl font-bold mt-2 text-center">French fries </h2>
+          <div class="text-center mt-3 flex justify-between items-center">
+            <button title="Add to Cart" class="add-to-cart group cursor-pointer outline-none hover:rotate-90 duration-300" data-name="French fries" data-price="120" data-image="/imgs/197472.jpg" data-description="فرنش فريز لذيذ مع صوص رانش وخضار طازجة" data-sizes='[{"label":"صغير","price":90},{"label":"وسط","price":120},{"label":"كبير","price":150}]'>
+              <svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 24 24" class="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300">
+                <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke-width="1.5"></path>
+                <path d="M8 12H16" stroke-width="1.5"></path>
+                <path d="M12 16V8" stroke-width="1.5"></path>
+              </svg>
+            </button>
+            <span class="text-lg font-semibold">120 L.E</span>
+          </div>
+        </div>
+      </div>
+
+    
+      <div class="wishcard w-45 p-0 text-white">
+        <img class="w-full" src="/imgs/v co;a.jpg" alt="فتوته رانش">
+        <div class="p-4">
+          <h2 class="text-xl font-bold mt-2 text-center"> v-cola</h2>
+          <div class="text-center mt-3 flex justify-between items-center">
+            <button title="Add to Cart" class="add-to-cart group cursor-pointer outline-none hover:rotate-90 duration-300" data-name="v-cola" data-price="25" data-image="/imgs/v co;a.jpg" data-description="برغر عصير مع جبنة ذائبة ونكهات مميزة" data-sizes='[{"label":"صغير","price":40},{"label":"وسط","price":45},{"label":"كبير","price":50}]'>
+              <svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 24 24" class="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300">
+                <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke-width="1.5"></path>
+                <path d="M8 12H16" stroke-width="1.5"></path>
+                <path d="M12 16V8" stroke-width="1.5"></path>
+              </svg>
+            </button>
+            <span class="text-lg font-semibold">40 L.E</span>
+
+          </div>
+        </div>
+      </div>
+
+    
+      <div class="wishcard w-45 p-0 text-white">
+        <img class="w-full" src="/imgs/chesseFrench fries.jpeg" alt="فتوته رانش">
+        <div class="p-4">
+          <h2 class="text-xl font-bold mt-2 text-center"> cheese fries</h2>
+          <div class="text-center mt-3 flex justify-between items-center">
+            <button
+              title="Add to Cart"
+              class="add-to-cart"
+              data-name="O-mashroom"
+              data-price="120"
+              data-image="/imgs/481107802_1021570963231897_1989374855717209178_n.jpg"
+              data-description="بطاطس مقلية مع جبنة ذائبة"
+              data-sizes='[{"label":"صغير","price":85},{"label":"وسط","price":100},{"label":"كبير","price":120}]'
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="50px"
+                height="50px"
+                viewBox="0 0 24 24"
+                class="stroke-orange-400 fill-none"
+              >
+                <path
+                  d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                  stroke-width="1.5"
+                ></path>
+                <path d="M8 12H16" stroke-width="1.5"></path>
+                <path d="M12 16V8" stroke-width="1.5"></path>
+              </svg>
+            </button>
+            <span class="text-lg font-semibold">120 L.E</span>
+          </div>
+        </div>
+      </div>
+
+    
+    </div>
+  
+ </section>
+
+  <div id="product-modal" class="product-modal" aria-hidden="true" role="dialog" aria-labelledby="product-title">
+    <div class="product-overlay" data-close="product"></div>
+    <div class="product-content">
+      <div class="product-header">
+        <h3 id="product-title">تفاصيل المنتج</h3>
+        <button id="product-close" aria-label="إغلاق" class="product-close">✕</button>
+      </div>
+      <div class="product-body">
+        <img id="product-image" alt="" class="product-image" />
+        <div class="product-info">
+          <h4 id="product-name"></h4>
+          <p id="product-desc" class="product-desc"></p>
+          <div id="product-sizes" class="product-sizes"></div>
+          <div class="product-combo">
+            <label class="combo-option">
+              <input type="checkbox" id="product-combo" name="combo" value="combo">
+              <div class="combo-info">
+                <span class="combo-label">أضف كومبو (مشروب + بطاطس)</span>
+                <span class="combo-price">+60 L.E</span>
+              </div>
+            </label>
+          </div>
+          <div class="product-quantity">
+            <label>الكمية:</label>
+            <div class="quantity-controls">
+              <button type="button" id="quantity-decrease" class="qty-btn" aria-label="تقليل الكمية">-</button>
+              <input type="number" id="product-quantity" name="quantity" value="1" min="1" readonly>
+              <button type="button" id="quantity-increase" class="qty-btn" aria-label="زيادة الكمية">+</button>
+            </div>
+          </div>
+          <div class="product-notes">
+            <label for="product-notes">ملاحظات:</label>
+            <textarea id="product-notes" rows="3" placeholder="أضف أي ملاحظات خاصة بطلبك..."></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="product-footer">
+        <div class="product-price">السعر: <span id="product-price">0</span> L.E</div>
+        <button id="product-confirm" class="product-confirm">تأكيد الشراء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Modal -->
+  <div id="cart-modal" class="cart-modal" aria-hidden="true" role="dialog" aria-labelledby="cart-title">
+    <div class="cart-overlay" data-close="cart"></div>
+    <div class="cart-content">
+      <div class="cart-header">
+        <h3 id="cart-title">سلة المشتريات</h3>
+        <button id="cart-close" aria-label="إغلاق" class="cart-close">✕</button>
+      </div>
+      <div id="cart-items" class="cart-items"></div>
+      <div class="cart-footer">
+        <div class="cart-total">الإجمالي: <span id="cart-total">0</span> L.E</div>
+        <div class="cart-actions">
+          <button id="cart-clear" class="cart-clear">تفريغ السلة</button>
+          <button id="cart-checkout" class="cart-checkout">إتمام الشراء</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div id="checkout-modal" class="checkout-modal" aria-hidden="true" role="dialog" aria-labelledby="checkout-title">
+    <div class="checkout-overlay" data-close="checkout"></div>
+    <div class="checkout-content">
+      <div class="checkout-header">
+        <h3 id="checkout-title">إتمام الشراء</h3>
+        <button id="checkout-close" aria-label="إغلاق" class="checkout-close">✕</button>
+      </div>
+      <form id="checkout-form" class="checkout-body" novalidate>
+        <div class="field">
+          <label for="chk-name">الاسم الكامل</label>
+          <input id="chk-name" name="name" type="text" required placeholder="أدخل اسمك" />
+        </div>
+        <div class="field">
+          <label for="chk-phone">رقم الهاتف</label>
+          <input id="chk-phone" name="phone" type="tel" required placeholder="01xxxxxxxxx" />
+        </div>
+        <div class="field">
+          <label for="chk-address">العنوان</label>
+          <textarea id="chk-address" name="address" rows="3" required placeholder="اكتب العنوان بالتفصيل"></textarea>
+          <button type="button" id="get-location-btn" style="margin-top: 0.5rem; padding: 0.5rem 1rem; background: rgba(59,130,246,0.2); color: #3b82f6; border: 1px solid rgba(59,130,246,0.3); border-radius: 8px; cursor: pointer; font-size: 0.9rem;">
+            📍 استخدام موقعي لتحديد الفرع الأقرب
+          </button>
+        </div>
+        <div class="field">
+          <label>الفرع المخصص</label>
+          <div id="assigned-branch-display" style="padding: 0.75rem; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); border-radius: 8px; margin-top: 0.5rem; display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong style="color: #22c55e;">الفرع المخصص تلقائياً:</strong>
+                <span id="assigned-branch-name" style="color: #22c55e; font-weight: 600; margin-inline-start: 0.5rem;"></span>
+              </div>
+              <button type="button" id="change-branch-btn" style="padding: 0.25rem 0.75rem; background: rgba(251,191,36,0.2); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); border-radius: 6px; cursor: pointer; font-size: 0.85rem;">
+                تغيير
+              </button>
+            </div>
+          </div>
+          <select id="chk-branch" name="branch" style="display: none; width: 100%; padding: 0.75rem; background:black ; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; margin-top: 0.5rem;">
+            <option value="">اختر الفرع</option>
+            <option class="bg-amber-50" value="فرع سموحة">فرع سموحة</option>
+            <option  value="فرع سبورتنج">فرع سبورتنج</option>
+            <option value="فرع ميامي">فرع ميامي</option>
+          </select>
+          <input type="hidden" id="assigned-branch" name="assignedBranch">
+        </div>
+        <div class="field">
+          <label for="chk-discount">كود الخصم (اختياري)</label>
+          <div style="display: flex; gap: 0.5rem;">
+            <input id="chk-discount" name="discount" type="text" placeholder="أدخل كود الخصم" style="flex: 1;" />
+            <button type="button" id="apply-discount-btn" class="btn" style="background: var(--color-amber-500); color: #000; padding: 0.75rem 1rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: none;">
+              تطبيق
+            </button>
+          </div>
+          <div id="discount-message" style="margin-top: 0.5rem; font-size: 0.9rem; display: none;"></div>
+        </div>
+        <div class="field">
+          <label>طريقة الدفع</label>
+          <div class="pay-options">
+            <label class="pay-option"><input type="radio" name="payment" value="cash" checked /> دفع نقدي</label>
+            <label class="pay-option"><input type="radio" name="payment" value="card" /> بطاقة (عند التسليم)</label>
+          </div>
+        </div>
+        <div id="checkout-errors" class="checkout-errors" aria-live="polite"></div>
+      </form>
+      <div class="checkout-footer">
+        <button id="checkout-confirm" class="checkout-confirm">تأكيد الطلب</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Invoice Modal -->
+  <div id="invoice-modal" class="invoice-modal" aria-hidden="true" role="dialog" aria-labelledby="invoice-title">
+    <div class="invoice-overlay" data-close="invoice"></div>
+    <div class="invoice-content">
+      <div class="invoice-header">
+        <h3 id="invoice-title">فاتورة الطلب</h3>
+        <button id="invoice-close" aria-label="إغلاق" class="invoice-close">✕</button>
+      </div>
+      <div class="invoice-body">
+        <div class="invoice-meta">
+          <div><strong>الاسم:</strong> <span id="inv-name"></span></div>
+          <div><strong>الهاتف:</strong> <span id="inv-phone"></span></div>
+          <div><strong>العنوان:</strong> <span id="inv-address"></span></div>
+          <div><strong>الفرع:</strong> <span id="inv-branch"></span></div>
+          <div><strong>الدفع:</strong> <span id="inv-payment"></span></div>
+        </div>
+        <div class="invoice-items">
+          <div class="inv-row inv-head">
+            <div>المنتج</div>
+            <div>المقاس</div>
+            <div>الكمية</div>
+            <div>السعر</div>
+            <div>الإجمالي</div>
+          </div>
+          <div id="inv-rows"></div>
+        </div>
+        <div class="invoice-total">الإجمالي الكلي: <span id="inv-total">0</span> L.E</div>
+      </div>
+      <div class="invoice-footer">
+        <button id="invoice-print" class="invoice-print">طباعة</button>
+        <button id="invoice-done" class="invoice-done">تم</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Orders Modal (Manager Only) -->
+  <div id="orders-modal" class="invoice-modal" aria-hidden="true" role="dialog" aria-labelledby="orders-title" style="display: none;">
+    <div class="invoice-overlay" data-close="orders"></div>
+    <div class="invoice-content" style="max-width: 90%; max-height: 90vh; overflow-y: auto;">
+      <div class="invoice-header">
+        <h3 id="orders-title">الطلبات والحجوزات</h3>
+        <button id="orders-close" aria-label="إغلاق" class="invoice-close">✕</button>
+      </div>
+      <div class="invoice-body">
+        <!-- Tabs -->
+        <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 2px solid rgba(0,0,0,0.1);">
+          <button id="tab-orders" onclick="switchTab('orders')" style="padding: 0.75rem 1.5rem;  color: #ffffff; border: none; border-bottom: 2px solid #f59e0b; cursor: pointer; font-weight: 600; border-radius: 8px 8px 0 0; background:#f59e0b;">الطلبات</button>
+          <button id="tab-reservations" onclick="switchTab('reservations')" style="padding: 0.75rem 1.5rem;  border: none; border-bottom: 2px solid transparent; cursor: pointer; font-weight: 600; background: #f59e0b;">الحجوزات</button>
+        </div>
+
+        <!-- Orders Tab Content -->
+        <div id="orders-tab-content">
+          <div style="margin-bottom: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+            <input type="text" id="orders-search" placeholder="بحث بالاسم أو رقم الهاتف..." style="flex: 1; min-width: 200px; padding: 0.75rem; border: 1px solid rgba(0,0,0,0.2); border-radius: 8px; font-size: 1rem;">
+            <div style="display: flex; gap: 0.5rem;">
+              <button onclick="filterOrdersList('all')" class="btn" id="filter-all-orders" style="background: rgba(251,191,36,0.2); color: #000; border: 1px solid rgba(251,191,36,0.3); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;">الكل</button>
+              <button onclick="filterOrdersList('today')" class="btn" id="filter-today-orders" style="background: rgba(0,0,0,0.1); color: #000; border: 1px solid rgba(0,0,0,0.2); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;">اليوم</button>
+              <button onclick="filterOrdersList('week')" class="btn" id="filter-week-orders" style="background: rgba(0,0,0,0.1); color: #000; border: 1px solid rgba(0,0,0,0.2); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;">هذا الأسبوع</button>
+            </div>
+          </div>
+
+          <div id="orders-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+            <div style="background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.3); border-radius: 12px; padding: 1.5rem; text-align: center;">
+              <h3 style="color: #f59e0b; margin: 0 0 0.5rem 0; font-size: 2rem;" id="total-orders-count">0</h3>
+              <p style="margin: 0; opacity: 0.8;">إجمالي الطلبات</p>
+            </div>
+            <div style="background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); border-radius: 12px; padding: 1.5rem; text-align: center;">
+              <h3 style="color: #22c55e; margin: 0 0 0.5rem 0; font-size: 2rem;" id="total-revenue-amount">0 L.E</h3>
+              <p style="margin: 0; opacity: 0.8;">إجمالي الإيرادات</p>
+            </div>
+            <div style="background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); border-radius: 12px; padding: 1.5rem; text-align: center;">
+              <h3 style="color: #3b82f6; margin: 0 0 0.5rem 0; font-size: 2rem;" id="today-orders-count">0</h3>
+              <p style="margin: 0; opacity: 0.8;">طلبات اليوم</p>
+            </div>
+          </div>
+
+          <div id="orders-list-container" style="display: grid; gap: 1.5rem;"></div>
+        </div>
+
+        <!-- Reservations Tab Content -->
+        <div id="reservations-tab-content" style="display: none;">
+          <div style="margin-bottom: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+            <input type="text" id="reservations-search" placeholder="بحث بالاسم أو رقم الهاتف..." style="flex: 1; min-width: 200px; padding: 0.75rem; border: 1px solid rgba(0,0,0,0.2); border-radius: 8px; font-size: 1rem;">
+            <div style="display: flex; gap: 0.5rem;">
+              <button onclick="filterReservationsList('all')" class="btn" id="filter-all-reservations" style="background: rgba(251,191,36,0.2); color: #000; border: 1px solid rgba(251,191,36,0.3); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;">الكل</button>
+              <button onclick="filterReservationsList('pending')" class="btn" id="filter-pending-reservations" style="background: rgba(0,0,0,0.1); color: #000; border: 1px solid rgba(0,0,0,0.2); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;">قيد الانتظار</button>
+              <button onclick="filterReservationsList('confirmed')" class="btn" id="filter-confirmed-reservations" style="background: rgba(0,0,0,0.1); color: #000; border: 1px solid rgba(0,0,0,0.2); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;">مؤكد</button>
+              <button onclick="filterReservationsList('today')" class="btn" id="filter-today-reservations" style="background: rgba(0,0,0,0.1); color: #000; border: 1px solid rgba(0,0,0,0.2); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;">اليوم</button>
+            </div>
+          </div>
+
+          <div id="reservations-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+            <div style="background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.3); border-radius: 12px; padding: 1.5rem; text-align: center;">
+              <h3 style="color: #f59e0b; margin: 0 0 0.5rem 0; font-size: 2rem;" id="total-reservations-count">0</h3>
+              <p style="margin: 0; opacity: 0.8;">إجمالي الحجوزات</p>
+            </div>
+            <div style="background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.3); border-radius: 12px; padding: 1.5rem; text-align: center;">
+              <h3 style="color: #f59e0b; margin: 0 0 0.5rem 0; font-size: 2rem;" id="pending-reservations-count">0</h3>
+              <p style="margin: 0; opacity: 0.8;">قيد الانتظار</p>
+            </div>
+            <div style="background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); border-radius: 12px; padding: 1.5rem; text-align: center;">
+              <h3 style="color: #22c55e; margin: 0 0 0.5rem 0; font-size: 2rem;" id="confirmed-reservations-count">0</h3>
+              <p style="margin: 0; opacity: 0.8;">مؤكد</p>
+            </div>
+            <div style="background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); border-radius: 12px; padding: 1.5rem; text-align: center;">
+              <h3 style="color: #3b82f6; margin: 0 0 0.5rem 0; font-size: 2rem;" id="today-reservations-count">0</h3>
+              <p style="margin: 0; opacity: 0.8;">حجوزات اليوم</p>
+            </div>
+          </div>
+
+          <div id="reservations-list-container" style="display: grid; gap: 1.5rem;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer id="footer" class="text-black py-1">
+    <div class="info">
+      <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+        <div class="mb-1 md:mb-0">
+          <h2 class="text-sm font-bold" data-i18n="footer_title">3etra-عترة</h2>
+          <p class="text-xs" data-i18n="footer_tagline">فاست فود بس مظبوط .</p>
+        </div>
+        <div class="mb-1 md:mb-0">
+          <h3 class="text-xs font-semibold" data-i18n="nav_contact">اتصل بنا</h3>
+          <p class="text-xs"><span data-i18n="footer_phone_label">الهاتف:</span> 0221246850</p>
+          <p class="text-xs"><span data-i18n="footer_email_label">البريد:</span>3ettra@gmail.com</p>
+        </div>
+        <div class="mb-1 md:mb-0">
+          <h3 class="text-xs font-semibold mb-0.5">تابعنا</h3>
+          <div class="flex gap-3 justify-center md:justify-start items-center">
+            <a href="https://www.facebook.com/3etraEG" target="_blank" rel="noopener noreferrer" class="text-black hover:text-yellow-600 transition-colors" aria-label="Facebook" style="display: inline-block;">
+              <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24" style="display: block;">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
+            </a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="text-black hover:text-yellow-600 transition-colors" aria-label="Instagram" style="display: inline-block;">
+              <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24" style="display: block;">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container mx-auto text-center py-0.5">
+      <p class="text-xs">&copy; 2024 <span data-i18n="footer_title">3etra-عترة</span>. <span data-i18n="footer_rights">جميع الحقوق محفوظة.</span></p>
+    </div>
+
+  </footer>
+
+  <script src="/i18n.js"></script>
+  <script>
+    // Load slider images from localStorage
+    (function loadSliderImages() {
+      try {
+        let sliderImages = JSON.parse(localStorage.getItem('sliderImages') || '[]');
+        
+        // If no slider images exist, use default images
+        if (sliderImages.length === 0) {
+          sliderImages = [
+            { id: 1, image: '/imgs/etra222.jpg', title: '', description: '' },
+            { id: 2, image: '/imgs/493690584_1064379248951068_3791806314464835859_n.jpg', title: 'تشكيلة ساندويتشات', description: 'نكهات متنوعة ترضي الجميع' },
+            { id: 3, image: '/imgs/481107802_1021570963231897_1989374855717209178_n.jpg', title: 'وجبات شهية', description: 'جودة عالية وسعر مناسب' }
+          ];
+        }
+        
+        const sliderTrack = document.getElementById('slider-track');
+        if (sliderTrack) {
+          sliderTrack.innerHTML = '';
+          sliderImages.forEach((slide) => {
+            const slideDiv = document.createElement('div');
+            slideDiv.className = 'slide';
+            const overlayContent = (slide.title || slide.description) 
+              ? `<div class="slide-overlay">
+                   ${slide.title ? `<h2>${slide.title}</h2>` : ''}
+                   ${slide.description ? `<p>${slide.description}</p>` : ''}
+                 </div>`
+              : '<div class="slide-overlay"></div>';
+            slideDiv.innerHTML = `
+              <img src="${slide.image}" alt="${slide.title || 'صورة'}" />
+              ${overlayContent}
+            `;
+            sliderTrack.appendChild(slideDiv);
+          });
+        }
+      } catch (e) {
+        console.error('Error loading slider images:', e);
+      }
+    })();
+  </script>
+  <script src="/main.js"></script>
+  <script>
+    // Check user session and control UI elements
+    (function() {
+      const dashboardLink = document.getElementById('dashboard-link');
+      const profileLink = document.getElementById('profile-link');
+      const reservationLink = document.getElementById('reservation-link');
+      const loginLink = document.getElementById('login-link');
+      const logoutBtn = document.getElementById('logout-btn');
+      const userInfo = document.getElementById('user-info');
+
+      const ordersLink = document.getElementById('orders-link');
+
+      function checkUserSession() {
+        const session = localStorage.getItem('userSession');
+        if (session) {
+          try {
+            const userSession = JSON.parse(session);
+            if (userSession.loggedIn) {
+              // User is logged in
+              loginLink.style.display = 'none';
+              logoutBtn.style.display = 'inline-block';
+              
+              // Show user info
+              userInfo.textContent = `مرحباً ${userSession.username}`;
+              userInfo.style.display = 'inline-block';
+              
+              // Show dashboard link for admin, profile link and reservation for client
+              if (userSession.type === 'admin') {
+                dashboardLink.style.display = 'inline-block';
+                ordersLink.style.display = 'inline-block';
+                profileLink.style.display = 'none';
+                reservationLink.style.display = 'none';
+              } else {
+                dashboardLink.style.display = 'none';
+                ordersLink.style.display = 'none';
+                profileLink.style.display = 'inline-block';
+                reservationLink.style.display = 'inline-block';
+              }
+              return;
+            }
+          } catch (e) {
+            console.error('Error parsing user session:', e);
+          }
+        }
+        
+        // User is not logged in
+        loginLink.style.display = 'inline-block';
+        logoutBtn.style.display = 'none';
+        dashboardLink.style.display = 'none';
+        ordersLink.style.display = 'none';
+        profileLink.style.display = 'none';
+        reservationLink.style.display = 'inline-block';
+        userInfo.style.display = 'none';
+      }
+
+      // Check on page load
+      checkUserSession();
+
+      // Logout functionality
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('userSession');
+        checkUserSession();
+        // Optional: redirect to login page
+        // window.location.href = 'index.html';
+      });
+    })();
+
+    // Orders Management (Manager Only)
+    (function() {
+      const ordersModal = document.getElementById('orders-modal');
+      const ordersLink = document.getElementById('orders-link');
+      const ordersClose = document.getElementById('orders-close');
+      const ordersOverlay = ordersModal ? ordersModal.querySelector('.invoice-overlay') : null;
+      
+      let allOrdersList = [];
+      let currentOrdersFilter = 'all';
+      let currentOrdersSearch = '';
+
+      function openOrdersModal() {
+        if (ordersModal) {
+          ordersModal.style.display = 'block';
+          ordersModal.setAttribute('aria-hidden', 'false');
+          loadOrdersList();
+        }
+      }
+
+      function closeOrdersModal() {
+        if (ordersModal) {
+          ordersModal.style.display = 'none';
+          ordersModal.setAttribute('aria-hidden', 'true');
+        }
+      }
+
+      function formatOrderDate(dateString) {
+        if (!dateString) return 'تاريخ غير محدد';
+        try {
+          const date = new Date(dateString);
+          const now = new Date();
+          const diffTime = Math.abs(now - date);
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+          
+          if (diffDays === 1) {
+            return 'أمس';
+          } else if (diffDays === 0) {
+            return 'اليوم';
+          } else if (diffDays < 7) {
+            return `منذ ${diffDays} أيام`;
+          }
+          
+          return date.toLocaleDateString('ar-EG', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+        } catch (e) {
+          return dateString;
+        }
+      }
+
+      function isOrderToday(dateString) {
+        if (!dateString) return false;
+        try {
+          const date = new Date(dateString);
+          const today = new Date();
+          return date.getDate() === today.getDate() &&
+                 date.getMonth() === today.getMonth() &&
+                 date.getFullYear() === today.getFullYear();
+        } catch (e) {
+          return false;
+        }
+      }
+
+      function isOrderThisWeek(dateString) {
+        if (!dateString) return false;
+        try {
+          const date = new Date(dateString);
+          const today = new Date();
+          const diffTime = Math.abs(today - date);
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+          return diffDays <= 7;
+        } catch (e) {
+          return false;
+        }
+      }
+
+      function loadOrdersList() {
+        try {
+          allOrdersList = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+          allOrdersList.sort((a, b) => {
+            const dateA = new Date(a.createdAt || a.id || 0);
+            const dateB = new Date(b.createdAt || b.id || 0);
+            return dateB - dateA;
+          });
+          renderOrdersList();
+          updateOrdersStats();
+        } catch (e) {
+          console.error('Error loading orders:', e);
+          allOrdersList = [];
+          renderOrdersList();
+        }
+      }
+
+      function filterOrdersList(filterType) {
+        currentOrdersFilter = filterType;
+        
+        // Update filter buttons
+        document.querySelectorAll('[id^="filter-"][id$="-orders"]').forEach(btn => {
+          btn.style.background = 'rgba(0,0,0,0.1)';
+          btn.style.color = '#000';
+          btn.style.border = '1px solid rgba(0,0,0,0.2)';
+        });
+        const activeBtn = document.getElementById(`filter-${filterType}-orders`);
+        if (activeBtn) {
+          activeBtn.style.background = 'rgba(251,191,36,0.2)';
+          activeBtn.style.color = '#000';
+          activeBtn.style.border = '1px solid rgba(251,191,36,0.3)';
+        }
+        
+        renderOrdersList();
+      }
+
+      function searchOrdersList() {
+        currentOrdersSearch = document.getElementById('orders-search').value.toLowerCase().trim();
+        renderOrdersList();
+      }
+
+      function getFilteredOrdersList() {
+        let filtered = allOrdersList;
+        
+        if (currentOrdersFilter === 'today') {
+          filtered = filtered.filter(order => isOrderToday(order.createdAt));
+        } else if (currentOrdersFilter === 'week') {
+          filtered = filtered.filter(order => isOrderThisWeek(order.createdAt));
+        }
+        
+        if (currentOrdersSearch) {
+          filtered = filtered.filter(order => {
+            const name = (order.customer?.name || '').toLowerCase();
+            const phone = (order.customer?.phone || '').toLowerCase();
+            return name.includes(currentOrdersSearch) || phone.includes(currentOrdersSearch);
+          });
+        }
+        
+        return filtered;
+      }
+
+      function renderOrdersList() {
+        const container = document.getElementById('orders-list-container');
+        const filteredOrders = getFilteredOrdersList();
+        
+        if (!container) return;
+        
+        container.innerHTML = '';
+        
+        if (filteredOrders.length === 0) {
+          container.innerHTML = '<p style="opacity: 0.7; text-align: center; padding: 3rem;">لا توجد طلبات</p>';
+          return;
+        }
+        
+        filteredOrders.forEach((order) => {
+          const orderCard = document.createElement('div');
+          orderCard.style.cssText = 'background: rgba(255,255,255,0.05); border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; padding: 1.5rem;';
+          
+          const itemsCount = order.items.reduce((sum, item) => sum + item.qty, 0);
+          
+          orderCard.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+              <div style="flex: 1;">
+                <h3 style="color: #f59e0b; margin: 0 0 0.5rem 0; font-size: 1.25rem;">طلب #${order.id}</h3>
+                <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                  <strong>الاسم:</strong> ${order.customer?.name || 'غير محدد'}
+                </p>
+                <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                  <strong>الهاتف:</strong> ${order.customer?.phone || 'غير محدد'}
+                </p>
+                   <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                     <strong>العنوان:</strong> ${order.customer?.address || 'غير محدد'}
+                   </p>
+                   <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                     <strong>الفرع:</strong> ${order.branch || order.customer?.branch || 'غير محدد'}
+                   </p>
+                   <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                     <strong>طريقة الدفع:</strong> ${order.customer?.payment === 'cash' ? 'نقدي' : 'بطاقة'}
+                   </p>
+                 </div>
+                 <div style="text-align: left;">
+                   <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                     <strong>التاريخ:</strong> ${formatOrderDate(order.createdAt)}
+                   </p>
+                <p style="margin: 0.5rem 0 0 0; font-size: 1.5rem; font-weight: 700; color: #22c55e;">
+                  ${order.total?.toFixed(2) || '0.00'} L.E
+                </p>
+              </div>
+            </div>
+            
+            <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1rem; margin-top: 1rem;">
+              <h4 style="color: #f59e0b; margin: 0 0 1rem 0; font-size: 1rem;">المنتجات (${itemsCount} عنصر)</h4>
+              <div style="display: grid; gap: 0.75rem;">
+                ${order.items.map(item => {
+                  const displayName = item.name + (item.comboInfo || '');
+                  const notesDisplay = item.notes ? `<div style="font-size: 0.85rem; opacity: 0.7; font-style: italic; margin-top: 0.25rem; padding-inline-start: 1rem;">📝 ${item.notes}</div>` : '';
+                  return `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: rgba(0,0,0,0.05); border-radius: 8px;">
+                      <div style="flex: 1;">
+                        <div style="font-weight: 600; margin-bottom: 0.25rem;">${displayName}</div>
+                        <div style="font-size: 0.9rem; opacity: 0.8;">
+                          <span>المقاس: ${item.size || 'غير محدد'}</span>
+                          <span style="margin-inline-start: 1rem;">الكمية: ${item.qty}</span>
+                        </div>
+                        ${notesDisplay}
+                      </div>
+                      <div style="text-align: left; font-weight: 600; color: #f59e0b;">
+                        ${(item.price * item.qty).toFixed(2)} L.E
+                      </div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+            
+            ${order.discount ? `
+              <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1rem; margin-top: 1rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <div style="font-size: 0.9rem; opacity: 0.8;">
+                    <strong>المجموع الفرعي:</strong> ${order.subtotal?.toFixed(2) || order.items.reduce((s, it) => s + it.price * it.qty, 0).toFixed(2)} L.E
+                  </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
+                  <div style="font-size: 0.9rem; color: #22c55e;">
+                    <strong>الخصم (${order.discount.code} - ${order.discount.percentage}%):</strong> -${order.discount.amount?.toFixed(2) || '0.00'} L.E
+                  </div>
+                </div>
+              </div>
+            ` : ''}
+            
+            <div style="border-top: 2px solid rgba(251,191,36,0.3); padding-top: 1rem; margin-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
+              <div style="font-size: 1.1rem; font-weight: 700; color: #f59e0b;">
+                الإجمالي الكلي
+              </div>
+              <div style="font-size: 1.5rem; font-weight: 700; color: #22c55e;">
+                ${order.total?.toFixed(2) || '0.00'} L.E
+              </div>
+            </div>
+          `;
+          
+          container.appendChild(orderCard);
+        });
+      }
+
+      function updateOrdersStats() {
+        const totalOrders = allOrdersList.length;
+        const totalRevenue = allOrdersList.reduce((sum, order) => sum + (order.total || 0), 0);
+        const todayOrdersCount = allOrdersList.filter(order => isOrderToday(order.createdAt)).length;
+        
+        const totalOrdersEl = document.getElementById('total-orders-count');
+        const totalRevenueEl = document.getElementById('total-revenue-amount');
+        const todayOrdersEl = document.getElementById('today-orders-count');
+        
+        if (totalOrdersEl) totalOrdersEl.textContent = totalOrders;
+        if (totalRevenueEl) totalRevenueEl.textContent = totalRevenue.toFixed(2) + ' L.E';
+        if (todayOrdersEl) todayOrdersEl.textContent = todayOrdersCount;
+      }
+
+      // Event listeners
+      if (ordersLink) {
+        ordersLink.addEventListener('click', openOrdersModal);
+      }
+      
+      if (ordersClose) {
+        ordersClose.addEventListener('click', closeOrdersModal);
+      }
+      
+      if (ordersOverlay) {
+        ordersOverlay.addEventListener('click', closeOrdersModal);
+      }
+
+      // Search functionality
+      const ordersSearchInput = document.getElementById('orders-search');
+      if (ordersSearchInput) {
+        ordersSearchInput.addEventListener('input', searchOrdersList);
+      }
+
+      // Make functions global for onclick handlers
+      window.filterOrdersList = filterOrdersList;
+
+      // Reservations Management
+      let allReservationsList = [];
+      let currentReservationsFilter = 'all';
+      let currentReservationsSearch = '';
+
+      function loadReservationsList() {
+        try {
+          allReservationsList = JSON.parse(localStorage.getItem('reservations') || '[]');
+          allReservationsList.sort((a, b) => {
+            const dateA = new Date(a.date || a.createdAt || a.id || 0);
+            const dateB = new Date(b.date || b.createdAt || b.id || 0);
+            return dateB - dateA;
+          });
+          renderReservationsList();
+          updateReservationsStats();
+        } catch (e) {
+          console.error('Error loading reservations:', e);
+          allReservationsList = [];
+          renderReservationsList();
+        }
+      }
+
+      function formatReservationDate(dateString) {
+        if (!dateString) return 'تاريخ غير محدد';
+        try {
+          const date = new Date(dateString);
+          return date.toLocaleDateString('ar-EG', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+        } catch (e) {
+          return dateString;
+        }
+      }
+
+      function isReservationToday(dateString) {
+        if (!dateString) return false;
+        try {
+          const date = new Date(dateString);
+          const today = new Date();
+          return date.getDate() === today.getDate() &&
+                 date.getMonth() === today.getMonth() &&
+                 date.getFullYear() === today.getFullYear();
+        } catch (e) {
+          return false;
+        }
+      }
+
+      function filterReservationsList(filterType) {
+        currentReservationsFilter = filterType;
+        
+        // Update filter buttons
+        document.querySelectorAll('[id^="filter-"][id$="-reservations"]').forEach(btn => {
+          btn.style.background = 'rgba(0,0,0,0.1)';
+          btn.style.color = '#000';
+          btn.style.border = '1px solid rgba(0,0,0,0.2)';
+        });
+        const activeBtn = document.getElementById(`filter-${filterType}-reservations`);
+        if (activeBtn) {
+          activeBtn.style.background = 'rgba(251,191,36,0.2)';
+          activeBtn.style.color = '#000';
+          activeBtn.style.border = '1px solid rgba(251,191,36,0.3)';
+        }
+        
+        renderReservationsList();
+      }
+
+      function searchReservationsList() {
+        currentReservationsSearch = document.getElementById('reservations-search').value.toLowerCase().trim();
+        renderReservationsList();
+      }
+
+      function getFilteredReservationsList() {
+        let filtered = allReservationsList;
+        
+        if (currentReservationsFilter === 'pending') {
+          filtered = filtered.filter(res => res.status === 'pending');
+        } else if (currentReservationsFilter === 'confirmed') {
+          filtered = filtered.filter(res => res.status === 'confirmed');
+        } else if (currentReservationsFilter === 'today') {
+          filtered = filtered.filter(res => isReservationToday(res.date));
+        }
+        
+        if (currentReservationsSearch) {
+          filtered = filtered.filter(res => {
+            const name = (res.name || '').toLowerCase();
+            const phone = (res.phone || '').toLowerCase();
+            return name.includes(currentReservationsSearch) || phone.includes(currentReservationsSearch);
+          });
+        }
+        
+        return filtered;
+      }
+
+      function renderReservationsList() {
+        const container = document.getElementById('reservations-list-container');
+        const filteredReservations = getFilteredReservationsList();
+        
+        if (!container) return;
+        
+        container.innerHTML = '';
+        
+        if (filteredReservations.length === 0) {
+          container.innerHTML = '<p style="opacity: 0.7; text-align: center; padding: 3rem;">لا توجد حجوزات</p>';
+          return;
+        }
+        
+        filteredReservations.forEach((reservation) => {
+          const reservationCard = document.createElement('div');
+          reservationCard.style.cssText = 'background: rgba(255,255,255,0.05); border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; padding: 1.5rem;';
+          
+          const statusColor = reservation.status === 'confirmed' ? '#22c55e' : reservation.status === 'cancelled' ? '#ef4444' : '#f59e0b';
+          const statusText = reservation.status === 'confirmed' ? 'مؤكد' : reservation.status === 'cancelled' ? 'ملغي' : 'قيد الانتظار';
+          const itemsCount = reservation.items ? reservation.items.reduce((sum, item) => sum + item.qty, 0) : 0;
+          
+          reservationCard.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+              <div style="flex: 1;">
+                <h3 style="color: #f59e0b; margin: 0 0 0.5rem 0; font-size: 1.25rem;">حجز #${reservation.id}</h3>
+                <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                  <strong>الاسم:</strong> ${reservation.name || 'غير محدد'}
+                </p>
+                <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                  <strong>الهاتف:</strong> ${reservation.phone || 'غير محدد'}
+                </p>
+                <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                  <strong>الفرع:</strong> ${reservation.branch || 'غير محدد'}
+                </p>
+                <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                  <strong>التاريخ:</strong> ${formatReservationDate(reservation.date)}
+                </p>
+                <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                  <strong>الوقت:</strong> ${reservation.time || 'غير محدد'}
+                </p>
+                <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                  <strong>عدد الضيوف:</strong> ${reservation.guests || 0}
+                </p>
+                ${reservation.notes ? `
+                  <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                    <strong>ملاحظات:</strong> ${reservation.notes}
+                  </p>
+                ` : ''}
+              </div>
+              <div style="text-align: left;">
+                <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                  <strong>الحالة:</strong> <span style="color: ${statusColor}; font-weight: 600;">${statusText}</span>
+                </p>
+                ${reservation.total ? `
+                  <p style="margin: 0.5rem 0 0 0; font-size: 1.5rem; font-weight: 700; color: #22c55e;">
+                    ${reservation.total.toFixed(2)} L.E
+                  </p>
+                ` : ''}
+              </div>
+            </div>
+            
+            ${reservation.items && reservation.items.length > 0 ? `
+              <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1rem; margin-top: 1rem;">
+                <h4 style="color: #f59e0b; margin: 0 0 1rem 0; font-size: 1rem;">المنتجات (${itemsCount} عنصر)</h4>
+                <div style="display: grid; gap: 0.75rem;">
+                  ${reservation.items.map(item => {
+                    return `
+                      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: rgba(0,0,0,0.05); border-radius: 8px;">
+                        <div style="flex: 1;">
+                          <div style="font-weight: 600; margin-bottom: 0.25rem;">${item.name}</div>
+                          <div style="font-size: 0.9rem; opacity: 0.8;">
+                            <span>المقاس: ${item.size || 'غير محدد'}</span>
+                            <span style="margin-inline-start: 1rem;">الكمية: ${item.qty}</span>
+                          </div>
+                        </div>
+                        <div style="text-align: left; font-weight: 600; color: #f59e0b;">
+                          ${(item.price * item.qty).toFixed(2)} L.E
+                        </div>
+                      </div>
+                    `;
+                  }).join('')}
+                </div>
+              </div>
+            ` : ''}
+            
+            <div style="border-top: 2px solid rgba(251,191,36,0.3); padding-top: 1rem; margin-top: 1rem; display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;">
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                ${reservation.status !== 'confirmed' ? `
+                  <button onclick="updateReservationStatus(${reservation.id}, 'confirmed')" style="padding: 0.5rem 1rem; background: #22c55e; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">✓ تأكيد</button>
+                ` : ''}
+                ${reservation.status !== 'cancelled' ? `
+                  <button onclick="updateReservationStatus(${reservation.id}, 'cancelled')" style="padding: 0.5rem 1rem; background: #ef4444; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">✕ إلغاء</button>
+                ` : ''}
+                ${reservation.status === 'confirmed' ? `
+                  <button onclick="updateReservationStatus(${reservation.id}, 'pending')" style="padding: 0.5rem 1rem; background: #f59e0b; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">↻ إعادة للانتظار</button>
+                ` : ''}
+              </div>
+              ${reservation.total ? `
+                <div style="font-size: 1.5rem; font-weight: 700; color: #22c55e;">
+                  ${reservation.total.toFixed(2)} L.E
+                </div>
+              ` : ''}
+            </div>
+          `;
+          
+          container.appendChild(reservationCard);
+        });
+      }
+
+      function updateReservationsStats() {
+        const totalReservations = allReservationsList.length;
+        const pendingCount = allReservationsList.filter(res => res.status === 'pending').length;
+        const confirmedCount = allReservationsList.filter(res => res.status === 'confirmed').length;
+        const todayCount = allReservationsList.filter(res => isReservationToday(res.date)).length;
+        
+        const totalEl = document.getElementById('total-reservations-count');
+        const pendingEl = document.getElementById('pending-reservations-count');
+        const confirmedEl = document.getElementById('confirmed-reservations-count');
+        const todayEl = document.getElementById('today-reservations-count');
+        
+        if (totalEl) totalEl.textContent = totalReservations;
+        if (pendingEl) pendingEl.textContent = pendingCount;
+        if (confirmedEl) confirmedEl.textContent = confirmedCount;
+        if (todayEl) todayEl.textContent = todayCount;
+      }
+
+      function updateReservationStatus(reservationId, newStatus) {
+        const reservation = allReservationsList.find(r => r.id === reservationId);
+        if (!reservation) return;
+        
+        reservation.status = newStatus;
+        
+        // Save to localStorage
+        try {
+          localStorage.setItem('reservations', JSON.stringify(allReservationsList));
+          renderReservationsList();
+          updateReservationsStats();
+        } catch (e) {
+          console.error('Error updating reservation:', e);
+          alert('حدث خطأ في تحديث الحجز');
+        }
+      }
+
+      // Tab switching
+      function switchTab(tabName) {
+        const ordersTab = document.getElementById('tab-orders');
+        const reservationsTab = document.getElementById('tab-reservations');
+        const ordersContent = document.getElementById('orders-tab-content');
+        const reservationsContent = document.getElementById('reservations-tab-content');
+        
+        if (tabName === 'orders') {
+          ordersTab.style.background = 'rgba(251,191,36,0.2)';
+          ordersTab.style.borderBottom = '2px solid #f59e0b';
+          reservationsTab.style.background = 'transparent';
+          reservationsTab.style.borderBottom = '2px solid transparent';
+          ordersContent.style.display = 'block';
+          reservationsContent.style.display = 'none';
+        } else {
+          reservationsTab.style.background = 'rgba(251,191,36,0.2)';
+          reservationsTab.style.borderBottom = '2px solid #f59e0b';
+          ordersTab.style.background = 'transparent';
+          ordersTab.style.borderBottom = '2px solid transparent';
+          ordersContent.style.display = 'none';
+          reservationsContent.style.display = 'block';
+          loadReservationsList();
+        }
+      }
+
+      // Search functionality for reservations
+      const reservationsSearchInput = document.getElementById('reservations-search');
+      if (reservationsSearchInput) {
+        reservationsSearchInput.addEventListener('input', searchReservationsList);
+      }
+
+      // Make functions global
+      window.filterReservationsList = filterReservationsList;
+      window.updateReservationStatus = updateReservationStatus;
+      window.switchTab = switchTab;
+    })();
+  </script>
+
+</body>
+</html>

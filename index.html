@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+  <title>3etra - عترة | الصفحة الرئيسية</title>
+  <link href="src/output.css" rel="stylesheet">
+  <style>
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, 
+        rgba(0,0,0,0.95), 
+        rgba(0,0,0,0.98)
+      );
+      padding: 2rem;
+    }
+    .login-box {
+      background: linear-gradient(180deg, rgba(0,0,0,0.95), rgba(0,0,0,0.98));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    .login-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .login-header h1 {
+      color: var(--color-amber-500);
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    .login-header p {
+      opacity: 0.8;
+      font-size: 0.9rem;
+    }
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      opacity: 0.9;
+    }
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #fff;
+      border-radius: 10px;
+      padding: 0.75rem;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--color-amber-500);
+      box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.15);
+    }
+    .login-btn {
+      width: 100%;
+      background: var(--color-amber-500);
+      color: #000;
+      padding: 0.75rem;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      transition: all var(--transition-base);
+    }
+    .login-btn:hover {
+      background: oklch(80% 0.18 70);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+    }
+    .login-btn:active {
+      transform: translateY(0);
+    }
+    .error-message {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+      padding: 0.75rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      text-align: center;
+      display: none;
+    }
+    .error-message.show {
+      display: block;
+    }
+    .skip-link {
+      text-align: center;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .skip-link a {
+      color: var(--color-amber-500);
+      text-decoration: none;
+      opacity: 0.8;
+    }
+    .skip-link a:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="login-container ">
+    <div class="login-box">
+      <div class="login-header">
+        <h1>3etra - عترة</h1>
+        <p>تسجيل الدخول</p>
+      </div>
+      <div id="error-message" class="error-message"></div>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="user-type">نوع المستخدم:</label>
+          <select id="user-type" required>
+            <option value="" class="bg-black text-white">اختر نوع المستخدم</option>
+            <option value="admin" class="bg-black text-white">مدير</option>
+            <option value="client" class="bg-black text-white">عميل</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="username">اسم المستخدم:</label>
+          <input type="text" id="username" required placeholder="أدخل اسم المستخدم">
+        </div>
+        <div class="form-group">
+          <label for="password">كلمة المرور:</label>
+          <input type="password" id="password" required placeholder="أدخل كلمة المرور">
+        </div>
+        <button type="submit" class="login-btn">تسجيل الدخول</button>
+      </form>
+      <div class="skip-link">
+        <a href="insex.html">الدخول كزائر (بدون تسجيل دخول)</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Default admin credentials (in production, this should be on a server)
+    const ADMIN_CREDENTIALS = {
+      username: 'admin',
+      password: 'admin123'
+    };
+
+    const loginForm = document.getElementById('login-form');
+    const errorMessage = document.getElementById('error-message');
+
+    function showError(msg) {
+      errorMessage.textContent = msg;
+      errorMessage.classList.add('show');
+      setTimeout(() => {
+        errorMessage.classList.remove('show');
+      }, 5000);
+    }
+
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const userTypeSelect = document.getElementById('user-type');
+      const usernameInput = document.getElementById('username');
+      const passwordInput = document.getElementById('password');
+      
+      if (!userTypeSelect) {
+        showError('خطأ: لم يتم العثور على حقل نوع المستخدم');
+        console.error('user-type element not found');
+        return;
+      }
+      
+      const userType = userTypeSelect.value;
+      const username = usernameInput ? usernameInput.value.trim() : '';
+      const password = passwordInput ? passwordInput.value : '';
+
+      if (!userType) {
+        showError('من فضلك اختر نوع المستخدم');
+        return;
+      }
+
+      if (!username || !password) {
+        showError('من فضلك أدخل اسم المستخدم وكلمة المرور');
+        return;
+      }
+
+      // Check admin credentials
+      if (userType === 'admin') {
+        const usernameMatch = username.toLowerCase() === ADMIN_CREDENTIALS.username.toLowerCase();
+        const passwordMatch = password === ADMIN_CREDENTIALS.password;
+        
+        if (usernameMatch && passwordMatch) {
+          // Store user session
+          const userSession = {
+            type: 'admin',
+            username: username,
+            loggedIn: true,
+            loginTime: Date.now()
+          };
+          localStorage.setItem('userSession', JSON.stringify(userSession));
+          
+          // Verify session was saved
+          const savedSession = localStorage.getItem('userSession');
+          if (savedSession) {
+            window.location.href = 'insex.html';
+          } else {
+            showError('خطأ في حفظ الجلسة، حاول مرة أخرى');
+          }
+        } else {
+          showError('اسم المستخدم أو كلمة المرور خطأ');
+        }
+      } else if (userType === 'client') {
+        // For client users, just store basic info (no password check needed)
+        const userSession = {
+          type: 'client',
+          username: username,
+          loggedIn: true,
+          loginTime: Date.now()
+        };
+        localStorage.setItem('userSession', JSON.stringify(userSession));
+        window.location.href = 'insex.html';
+      }
+    });
+  </script>
+</body>
+</html>

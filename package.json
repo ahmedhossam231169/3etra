@@ -1,0 +1,23 @@
+{
+  "name": "etra3-restaurant-menu",
+  "version": "1.0.0",
+  "description": "Modern restaurant menu and ordering system",
+  "main": "index.html",
+  "scripts": {
+    "build:css": "npx tailwindcss -i ./src/input.css -o ./src/output.css",
+    "watch:css": "npx tailwindcss -i ./src/input.css -o ./src/output.css --watch"
+  },
+  "keywords": [
+    "restaurant",
+    "menu",
+    "ordering",
+    "e-commerce",
+    "vanilla-js"
+  ],
+  "author": "3etra Restaurant",
+  "license": "MIT",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.16",
+    "tailwindcss": "^4.1.16"
+  }
+}

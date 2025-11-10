@@ -1,0 +1,1847 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>لوحة التحكم - إدارة المنتجات</title>
+  <link href="src/output.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+      color: #fff;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .dashboard-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 2rem;
+    }
+    .dashboard-sidebar {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 1.5rem;
+      height: fit-content;
+      position: sticky;
+      top: 2rem;
+      backdrop-filter: blur(10px);
+    }
+    .sidebar-menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sidebar-menu-item {
+      margin-bottom: 0.5rem;
+    }
+    .sidebar-menu-item button {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: right;
+      font-size: 0.95rem;
+    }
+    .sidebar-menu-item button:hover {
+      background: rgba(251, 191, 36, 0.1);
+      border-color: rgba(251, 191, 36, 0.3);
+    }
+    .sidebar-menu-item button.active {
+      background: rgba(251, 191, 36, 0.2);
+      border-color: #fbbf24;
+      color: #fbbf24;
+      font-weight: 600;
+    }
+    .dashboard-content {
+      min-height: 500px;
+    }
+    .dashboard-section {
+      display: none;
+    }
+    .dashboard-section.active {
+      display: block;
+    }
+    .dashboard-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .dashboard-header h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    .nav-links a {
+      padding: 0.5rem 1rem;
+      background: rgba(251, 191, 36, 0.1);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      border-radius: 8px;
+      color: #fbbf24;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    .nav-links a:hover {
+      background: rgba(251, 191, 36, 0.2);
+      transform: translateY(-2px);
+    }
+    .nav-link-btn {
+      border: none;
+      font-family: inherit;
+    }
+    .nav-link-btn:hover {
+      background: rgba(251, 191, 36, 0.3) !important;
+      transform: translateY(-2px);
+    }
+    .product-form {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(10px);
+    }
+    .product-form h2 {
+      color: #fbbf24;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #fff;
+      font-weight: 500;
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 1rem;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #fbbf24;
+      box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2);
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    .size-inputs {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+      font-size: 1rem;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #000;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);
+    }
+    .btn-danger {
+      background: #ef4444;
+      color: #fff;
+    }
+    .btn-danger:hover {
+      background: #dc2626;
+      transform: translateY(-2px);
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .product-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+    .product-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .product-card-body {
+      padding: 1rem;
+    }
+    .product-card h3 {
+      color: #fbbf24;
+      margin-bottom: 0.5rem;
+    }
+    .product-card p {
+      opacity: 0.8;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+    .product-card .price {
+      font-weight: 700;
+      color: #fbbf24;
+      font-size: 1.1rem;
+    }
+    .product-card-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .product-card-actions button {
+      flex: 1;
+    }
+    .category-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    }
+    .category-tab {
+      padding: 0.75rem 1.5rem;
+      background: transparent;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.3s;
+    }
+    .category-tab.active {
+      color: #fbbf24;
+      border-bottom-color: #fbbf24;
+    }
+    .form-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+      margin-top: 1.5rem;
+    }
+
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+      .dashboard-header h1 {
+        font-size: 1.75rem;
+      }
+      .dashboard-header p {
+        font-size: 0.9rem;
+      }
+      .nav-links {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+      .nav-links a {
+        width: 100%;
+        text-align: center;
+        padding: 0.75rem;
+      }
+      .product-form {
+        padding: 1.25rem;
+        margin-bottom: 1.5rem;
+      }
+      .product-form h2 {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+      }
+      .category-tabs {
+        flex-wrap: wrap;
+        gap: 0.25rem;
+      }
+      .category-tab {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        flex: 1;
+        min-width: calc(50% - 0.25rem);
+      }
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        padding: 0.6rem;
+        font-size: 0.95rem;
+      }
+      .size-inputs {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+      .form-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+      .form-actions button {
+        width: 100%;
+      }
+      .products-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+      .product-card-actions {
+        flex-direction: column;
+      }
+      .product-card-actions button {
+        width: 100%;
+      }
+      #branches-container {
+        grid-template-columns: 1fr !important;
+        gap: 0.75rem !important;
+      }
+      #branches-container > div {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 1rem !important;
+        padding: 1rem !important;
+      }
+      #branches-container > div > div:last-child {
+        width: 100%;
+      }
+      #branches-container > div > div:last-child button {
+        width: 100%;
+        min-width: auto !important;
+      }
+      .dashboard-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      .dashboard-sidebar {
+        position: relative;
+        top: 0;
+        order: -1;
+      }
+      .sidebar-menu {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+      }
+      .sidebar-menu-item button {
+        font-size: 0.85rem;
+        padding: 0.6rem 0.75rem;
+      }
+      #orders-stats {
+        grid-template-columns: 1fr !important;
+      }
+      #orders-list > div {
+        padding: 1rem !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 0.75rem;
+      }
+      .dashboard-header h1 {
+        font-size: 1.5rem;
+      }
+      .product-form {
+        padding: 1rem;
+      }
+      .product-form h2 {
+        font-size: 1.1rem;
+      }
+      .btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <div class="dashboard-sidebar">
+      <div class="dashboard-header" style="text-align: right; margin-bottom: 1.5rem;">
+        <h1 style="font-size: 1.5rem; margin-bottom: 0.5rem;">لوحة التحكم</h1>
+        <div class="nav-links" style="flex-direction: column; gap: 0.5rem;">
+          <a href="insex.html" style="width: 100%; text-align: center; font-size: 0.85rem;">العودة للصفحة الرئيسية</a>
+          <button class="nav-link-btn" data-section="orders" style="width: 100%; text-align: center; font-size: 0.85rem; padding: 0.5rem 1rem; background: rgba(251,191,36,0.2); border: 1px solid rgba(251,191,36,0.3); border-radius: 8px; color: #fbbf24; cursor: pointer; transition: all 0.3s;">الطلبات</button>
+          <a href="#" id="dashboard-logout" style="background: rgba(239,68,68,0.2); color: #ef4444; border-color: rgba(239,68,68,0.3); width: 100%; text-align: center; font-size: 0.85rem;">تسجيل الخروج</a>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li class="sidebar-menu-item">
+          <button class="sidebar-menu-btn active" data-section="products-management">إدارة المنتجات</button>
+        </li>
+        <li class="sidebar-menu-item">
+          <button class="sidebar-menu-btn" data-section="products-list">المنتجات الحالية</button>
+        </li>
+        <li class="sidebar-menu-item">
+          <button class="sidebar-menu-btn" data-section="branches">إدارة حجوزات الفروع</button>
+        </li>
+        <li class="sidebar-menu-item">
+          <button class="sidebar-menu-btn" data-section="discount-codes">إدارة أكواد الخصم</button>
+        </li>
+        <li class="sidebar-menu-item">
+          <button class="sidebar-menu-btn" data-section="slider-images">إدارة الصور المتحركة</button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="dashboard-content">
+      <!-- Products Management Section -->
+      <div id="products-management" class="dashboard-section active">
+        <div class="product-form">
+      <div class="category-tabs">
+        <button class="category-tab active" data-category="menu">قائمة الطعام</button>
+        <button class="category-tab" data-category="appetizers">المقبلات</button>
+      </div>
+
+      <h2 id="form-title">إضافة منتج جديد</h2>
+      <form id="product-form">
+        <div class="form-group">
+          <label for="product-name">اسم المنتج</label>
+          <input type="text" id="product-name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="product-description">الوصف</label>
+          <textarea id="product-description" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="product-image">الصورة</label>
+          <input type="file" id="product-image" accept="image/*" onchange="handleImageUpload(event)">
+          <div id="image-preview" style="margin-top: 1rem; display: none;">
+            <img id="preview-img" src="" alt="Preview" style="max-width: 200px; max-height: 200px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);">
+          </div>
+          <small style="opacity: 0.7; font-size: 0.9rem;">اختر صورة جديدة أو استخدم الصورة الحالية عند التعديل</small>
+        </div>
+
+        <div class="form-group">
+          <label>الأحجام والأسعار</label>
+          <div id="size-inputs">
+            <div class="size-inputs">
+              <input type="text" placeholder="اسم الحجم (مثل: صغير)" required>
+              <input type="number" placeholder="السعر" required>
+            </div>
+          </div>
+          <button type="button" class="btn" onclick="addSizeInput()" style="margin-top: 0.5rem; background: rgba(255,255,255,0.1); color: #fff; width: 100%;">+ إضافة حجم آخر</button>
+        </div>
+
+        <input type="hidden" id="product-id">
+        <input type="hidden" id="product-category" value="menu">
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-danger" onclick="resetForm()">إلغاء</button>
+          <button type="submit" class="btn btn-primary">حفظ المنتج</button>
+        </div>
+      </form>
+        </div>
+      </div>
+
+      <!-- Products List Section -->
+      <div id="products-list" class="dashboard-section">
+        <div class="product-form">
+          <h2 style="color: #fbbf24; margin-bottom: 1rem;">المنتجات الحالية</h2>
+          <div id="current-products" class="products-grid"></div>
+        </div>
+      </div>
+
+      <!-- Branch Reservation Control Section -->
+      <div id="branches" class="dashboard-section">
+        <div class="product-form">
+          <h2 style="color: #fbbf24; margin-bottom: 1rem;">إدارة حجوزات الفروع</h2>
+          <p style="opacity: 0.8; margin-bottom: 1.5rem;">تحكم في إمكانية حجز الطاولات في كل فرع</p>
+          <div id="branches-container" style="display: grid; gap: 1rem;"></div>
+        </div>
+      </div>
+
+      <!-- Discount Codes Section -->
+      <div id="discount-codes" class="dashboard-section">
+        <div class="product-form">
+          <h2>إدارة أكواد الخصم</h2>
+          <p style="opacity: 0.8; margin-bottom: 1.5rem;">إنشاء وإدارة أكواد الخصم للعملاء</p>
+          
+          <form id="discount-form" style="margin-bottom: 2rem;">
+            <div class="form-group">
+              <label for="discount-name">اسم كود الخصم *</label>
+              <input type="text" id="discount-name" required placeholder="مثال: SUMMER2024" maxlength="50">
+            </div>
+            
+            <div class="form-group">
+              <label for="discount-percentage">نسبة الخصم (%) *</label>
+              <input type="number" id="discount-percentage" required placeholder="مثال: 10" min="1" max="100">
+            </div>
+
+            <input type="hidden" id="discount-id">
+            
+            <div class="form-actions">
+              <button type="button" class="btn btn-danger" onclick="resetDiscountForm()">إلغاء</button>
+              <button type="submit" class="btn btn-primary">حفظ كود الخصم</button>
+            </div>
+          </form>
+
+          <div id="discount-codes-container">
+            <h3 style="color: #fbbf24; margin-bottom: 1rem;">أكواد الخصم الحالية</h3>
+            <div id="discount-codes-list" style="display: grid; gap: 1rem;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slider Images Management Section -->
+      <div id="slider-images" class="dashboard-section">
+        <div class="product-form">
+          <h2>إدارة الصور المتحركة</h2>
+          <p style="opacity: 0.8; margin-bottom: 1.5rem;">إضافة وحذف وإعادة ترتيب صور العرض المتحركة في الصفحة الرئيسية</p>
+          
+          <form id="slider-form" style="margin-bottom: 2rem;">
+            <div class="form-group">
+              <label for="slider-image">صورة العرض <span id="slider-image-required">*</span></label>
+              <input type="file" id="slider-image" accept="image/*" onchange="handleSliderImageUpload(event)">
+              <div id="slider-image-preview" style="margin-top: 1rem; display: none;">
+                <img id="slider-preview-img" src="" alt="Preview" style="max-width: 300px; max-height: 200px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);">
+              </div>
+              <small style="opacity: 0.7; font-size: 0.9rem;" id="slider-image-help">اختر صورة جديدة أو استخدم الصورة الحالية عند التعديل</small>
+            </div>
+
+            <div class="form-group">
+              <label for="slider-title">العنوان (اختياري)</label>
+              <input type="text" id="slider-title" placeholder="مثال: تشكيلة ساندويتشات">
+            </div>
+
+            <div class="form-group">
+              <label for="slider-description">الوصف (اختياري)</label>
+              <textarea id="slider-description" placeholder="مثال: نكهات متنوعة ترضي الجميع" rows="2"></textarea>
+            </div>
+
+            <input type="hidden" id="slider-id">
+            
+            <div class="form-actions">
+              <button type="button" class="btn btn-danger" onclick="resetSliderForm()">إلغاء</button>
+              <button type="submit" class="btn btn-primary">إضافة صورة</button>
+            </div>
+          </form>
+
+          <div id="slider-images-container">
+            <h3 style="color: #fbbf24; margin-bottom: 1rem;">الصور الحالية</h3>
+            <div id="slider-images-list" style="display: grid; gap: 1rem;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Orders Management Section -->
+      <div id="orders" class="dashboard-section">
+        <div class="product-form">
+          <h2>الطلبات والحجوزات</h2>
+          <p style="opacity: 0.8; margin-bottom: 1.5rem;">عرض تفاصيل جميع الطلبات والحجوزات المقدمة من العملاء</p>
+          
+          <!-- Tabs -->
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 2px solid rgba(255,255,255,0.1);">
+            <button id="dashboard-tab-orders" onclick="switchDashboardTab('orders')" style="padding: 0.75rem 1.5rem; background: rgba(251,191,36,0.2); color: #fbbf24; border: none; border-bottom: 2px solid #fbbf24; cursor: pointer; font-weight: 600; border-radius: 8px 8px 0 0;">الطلبات</button>
+            <button id="dashboard-tab-reservations" onclick="switchDashboardTab('reservations')" style="padding: 0.75rem 1.5rem; background: transparent; color: #fff; border: none; border-bottom: 2px solid transparent; cursor: pointer; font-weight: 600;">الحجوزات</button>
+          </div>
+
+          <!-- Orders Tab Content -->
+          <div id="dashboard-orders-tab-content">
+            <div style="margin-bottom: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+              <div class="form-group" style="margin-bottom: 0; flex: 1; min-width: 200px;">
+                <input type="text" id="order-search" placeholder="بحث بالاسم أو رقم الهاتف..." style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff;">
+              </div>
+              <div style="display: flex; gap: 0.5rem;">
+                <button onclick="filterOrders('all')" class="btn" style="background: rgba(251,191,36,0.2); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3);" id="filter-all">الكل</button>
+                <button onclick="filterOrders('today')" class="btn" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2);" id="filter-today">اليوم</button>
+                <button onclick="filterOrders('week')" class="btn" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2);" id="filter-week">هذا الأسبوع</button>
+              </div>
+            </div>
+
+            <div id="orders-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+              <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem; text-align: center;">
+                <h3 style="color: #fbbf24; margin: 0 0 0.5rem 0; font-size: 2rem;" id="total-orders">0</h3>
+                <p style="margin: 0; opacity: 0.8;">إجمالي الطلبات</p>
+              </div>
+              <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem; text-align: center;">
+                <h3 style="color: #4ade80; margin: 0 0 0.5rem 0; font-size: 2rem;" id="total-revenue">0 L.E</h3>
+                <p style="margin: 0; opacity: 0.8;">إجمالي الإيرادات</p>
+              </div>
+              <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem; text-align: center;">
+                <h3 style="color: #60a5fa; margin: 0 0 0.5rem 0; font-size: 2rem;" id="today-orders">0</h3>
+                <p style="margin: 0; opacity: 0.8;">طلبات اليوم</p>
+              </div>
+            </div>
+
+            <div id="orders-list" style="display: grid; gap: 1.5rem;"></div>
+          </div>
+
+          <!-- Reservations Tab Content -->
+          <div id="dashboard-reservations-tab-content" style="display: none;">
+            <div style="margin-bottom: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+              <div class="form-group" style="margin-bottom: 0; flex: 1; min-width: 200px;">
+                <input type="text" id="dashboard-reservation-search" placeholder="بحث بالاسم أو رقم الهاتف..." style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff;">
+              </div>
+              <div style="display: flex; gap: 0.5rem;">
+                <button onclick="filterDashboardReservations('all')" class="btn" style="background: rgba(251,191,36,0.2); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3);" id="dashboard-filter-all-reservations">الكل</button>
+                <button onclick="filterDashboardReservations('pending')" class="btn" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2);" id="dashboard-filter-pending-reservations">قيد الانتظار</button>
+                <button onclick="filterDashboardReservations('confirmed')" class="btn" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2);" id="dashboard-filter-confirmed-reservations">مؤكد</button>
+                <button onclick="filterDashboardReservations('today')" class="btn" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2);" id="dashboard-filter-today-reservations">اليوم</button>
+              </div>
+            </div>
+
+            <div id="dashboard-reservations-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+              <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem; text-align: center;">
+                <h3 style="color: #fbbf24; margin: 0 0 0.5rem 0; font-size: 2rem;" id="dashboard-total-reservations">0</h3>
+                <p style="margin: 0; opacity: 0.8;">إجمالي الحجوزات</p>
+              </div>
+              <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem; text-align: center;">
+                <h3 style="color: #fbbf24; margin: 0 0 0.5rem 0; font-size: 2rem;" id="dashboard-pending-reservations">0</h3>
+                <p style="margin: 0; opacity: 0.8;">قيد الانتظار</p>
+              </div>
+              <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem; text-align: center;">
+                <h3 style="color: #4ade80; margin: 0 0 0.5rem 0; font-size: 2rem;" id="dashboard-confirmed-reservations">0</h3>
+                <p style="margin: 0; opacity: 0.8;">مؤكد</p>
+              </div>
+              <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem; text-align: center;">
+                <h3 style="color: #60a5fa; margin: 0 0 0.5rem 0; font-size: 2rem;" id="dashboard-today-reservations">0</h3>
+                <p style="margin: 0; opacity: 0.8;">حجوزات اليوم</p>
+              </div>
+            </div>
+
+            <div id="dashboard-reservations-list" style="display: grid; gap: 1.5rem;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Section Navigation
+    function initSectionNavigation() {
+      const menuButtons = document.querySelectorAll('.sidebar-menu-btn');
+      const navLinkButtons = document.querySelectorAll('.nav-link-btn');
+      const sections = document.querySelectorAll('.dashboard-section');
+
+      // Handle sidebar menu buttons
+      menuButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const targetSection = button.getAttribute('data-section');
+          switchToSection(targetSection, button);
+        });
+      });
+
+      // Handle nav link buttons (like orders)
+      navLinkButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const targetSection = button.getAttribute('data-section');
+          // Remove active from all sidebar buttons
+          menuButtons.forEach(btn => btn.classList.remove('active'));
+          switchToSection(targetSection);
+        });
+      });
+
+      function switchToSection(targetSection, activeButton = null) {
+        // Remove active class from all sidebar buttons
+        menuButtons.forEach(btn => btn.classList.remove('active'));
+        
+        // Remove active class from all sections
+        sections.forEach(section => section.classList.remove('active'));
+
+        // Add active class to clicked sidebar button if provided
+        if (activeButton) {
+          activeButton.classList.add('active');
+        }
+
+        // Add active class to target section
+        const target = document.getElementById(targetSection);
+        if (target) {
+          target.classList.add('active');
+          // Scroll to top of content area
+          document.querySelector('.dashboard-content').scrollIntoView({ behavior: 'smooth', block: 'start' });
+          
+          // Load orders if orders section is activated
+          if (targetSection === 'orders') {
+            setTimeout(() => {
+              if (typeof loadOrders === 'function') {
+                loadOrders();
+              }
+            }, 100);
+          }
+        }
+      }
+    }
+
+    // Initialize section navigation when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSectionNavigation);
+    } else {
+      initSectionNavigation();
+    }
+
+    // Authentication check - Must be admin to access dashboard
+    (function() {
+      const session = localStorage.getItem('userSession');
+      let isAdmin = false;
+      
+      if (session) {
+        try {
+          const userSession = JSON.parse(session);
+          if (userSession.loggedIn && userSession.type === 'admin') {
+            isAdmin = true;
+          }
+        } catch (e) {
+          console.error('Error parsing user session:', e);
+        }
+      }
+      
+      if (!isAdmin) {
+        alert('يجب أن تكون مديراً للوصول إلى لوحة التحكم');
+        window.location.href = 'index.html';
+        return;
+      }
+    })();
+
+    let currentCategory = 'menu';
+    let editingProduct = null;
+    let uploadedImageBase64 = '';
+
+    // Load products on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      loadProducts();
+      setupCategoryTabs();
+      
+      // Logout button
+      const logoutBtn = document.getElementById('dashboard-logout');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+            localStorage.removeItem('userSession');
+            window.location.href = 'index.html';
+          }
+        });
+      }
+    });
+
+    // Handle image upload and convert to base64
+    function handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        uploadedImageBase64 = e.target.result;
+        const preview = document.getElementById('image-preview');
+        const previewImg = document.getElementById('preview-img');
+        preview.style.display = 'block';
+        previewImg.src = uploadedImageBase64;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Category tabs
+    function setupCategoryTabs() {
+      const tabs = document.querySelectorAll('.category-tab');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          currentCategory = tab.dataset.category;
+          document.getElementById('product-category').value = currentCategory;
+          loadProducts();
+          resetForm();
+        });
+      });
+    }
+
+    // Add size input
+    function addSizeInput() {
+      const container = document.getElementById('size-inputs');
+      const div = document.createElement('div');
+      div.className = 'size-inputs';
+      div.innerHTML = `
+        <input type="text" placeholder="اسم الحجم" required>
+        <input type="number" placeholder="السعر" required>
+        <button type="button" onclick="this.parentElement.remove()" style="background: #ef4444; color: #fff; border: none; padding: 0.5rem; border-radius: 4px; cursor: pointer;">✕</button>
+      `;
+      container.appendChild(div);
+    }
+
+    // Reset form
+    function resetForm() {
+      document.getElementById('product-form').reset();
+      document.getElementById('size-inputs').innerHTML = `
+        <div class="size-inputs">
+          <input type="text" placeholder="اسم الحجم (مثل: صغير)" required>
+          <input type="number" placeholder="السعر" required>
+        </div>
+      `;
+      document.getElementById('product-id').value = '';
+      document.getElementById('image-preview').style.display = 'none';
+      uploadedImageBase64 = '';
+      editingProduct = null;
+      document.getElementById('form-title').textContent = 'إضافة منتج جديد';
+    }
+
+    // Save product
+    document.getElementById('product-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById('product-name').value;
+      const description = document.getElementById('product-description').value;
+      const category = document.getElementById('product-category').value;
+      
+      // Use uploaded base64 image or existing image from editing
+      let image = uploadedImageBase64 || (editingProduct ? editingProduct.image : '');
+      
+      if (!image) {
+        alert('يرجى رفع صورة');
+        return;
+      }
+      
+      const sizeInputs = document.querySelectorAll('.size-inputs');
+      const sizes = Array.from(sizeInputs).map(input => {
+        const inputs = input.querySelectorAll('input');
+        return {
+          label: inputs[0].value,
+          price: parseInt(inputs[1].value)
+        };
+      }).filter(s => s.label && s.price);
+
+      const productData = {
+        id: editingProduct ? editingProduct.id : Date.now(),
+        name,
+        description,
+        image,
+        sizes,
+        category
+      };
+
+      const products = JSON.parse(localStorage.getItem('products') || '[]');
+      
+      if (editingProduct) {
+        const index = products.findIndex(p => p.id === editingProduct.id);
+        products[index] = productData;
+      } else {
+        products.push(productData);
+      }
+      
+      localStorage.setItem('products', JSON.stringify(products));
+      loadProducts();
+      resetForm();
+      
+      alert('تم الحفظ بنجاح!');
+    });
+
+    // Load products
+    function loadProducts() {
+      const products = JSON.parse(localStorage.getItem('products') || '[]');
+      const filtered = products.filter(p => p.category === currentCategory);
+      const container = document.getElementById('current-products');
+      
+      container.innerHTML = '';
+      
+      filtered.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        const defaultPrice = product.sizes && product.sizes.length > 0 ? product.sizes[0].price : 0;
+        card.innerHTML = `
+          <img src="${product.image}" alt="${product.name}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'300\\' height=\\'200\\'%3E%3Crect fill=\\'%23333\\' width=\\'300\\' height=\\'200\\'/%3E%3Ctext fill=\\'%23999\\' x=\\'50%25\\' y=\\'50%25\\' text-anchor=\\'middle\\' dy=\\'.3em\\'%3ENo Image%3C/text%3E%3C/svg%3E'">
+          <div class="product-card-body">
+            <h3>${product.name}</h3>
+            <p>${product.description}</p>
+            <div class="price">${defaultPrice} L.E</div>
+            <div class="product-card-actions">
+              <button class="btn btn-primary" onclick="editProduct(${product.id})">تعديل</button>
+              <button class="btn btn-danger" onclick="deleteProduct(${product.id})">حذف</button>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Edit product
+    function editProduct(id) {
+      const products = JSON.parse(localStorage.getItem('products') || '[]');
+      const product = products.find(p => p.id === id);
+      
+      if (!product) return;
+      
+      editingProduct = product;
+      document.getElementById('product-name').value = product.name;
+      document.getElementById('product-description').value = product.description;
+      document.getElementById('product-image').value = ''; // Clear file input
+      document.getElementById('product-category').value = product.category;
+      document.getElementById('product-id').value = product.id;
+      document.getElementById('form-title').textContent = 'تعديل المنتج';
+      
+      // Show existing image in preview
+      uploadedImageBase64 = product.image;
+      const preview = document.getElementById('image-preview');
+      const previewImg = document.getElementById('preview-img');
+      preview.style.display = 'block';
+      previewImg.src = product.image;
+      
+      // Update category tab
+      document.querySelectorAll('.category-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.category === product.category);
+      });
+      currentCategory = product.category;
+      
+      // Load sizes
+      const container = document.getElementById('size-inputs');
+      container.innerHTML = '';
+      product.sizes.forEach((size, index) => {
+        const div = document.createElement('div');
+        div.className = 'size-inputs';
+        div.innerHTML = `
+          <input type="text" placeholder="اسم الحجم" value="${size.label}" required>
+          <input type="number" placeholder="السعر" value="${size.price}" required>
+          ${index > 0 ? '<button type="button" onclick="this.parentElement.remove()" style="background: #ef4444; color: #fff; border: none; padding: 0.5rem; border-radius: 4px; cursor: pointer;">✕</button>' : ''}
+        `;
+        container.appendChild(div);
+      });
+      
+      document.getElementById('product-form').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Delete product
+    function deleteProduct(id) {
+      if (!confirm('هل أنت متأكد من حذف هذا المنتج؟')) return;
+      
+      const products = JSON.parse(localStorage.getItem('products') || '[]');
+      const filtered = products.filter(p => p.id !== id);
+      localStorage.setItem('products', JSON.stringify(filtered));
+      loadProducts();
+    }
+
+    // Branch Management Functions
+    const branches = [
+      { id: 'branch-1', name: 'فرع ميامي' },
+      { id: 'branch-2', name: 'فرع سبورتنج' },
+      { id: 'branch-3', name: 'فرع سموحة' },
+      { id: 'branch-4', name: 'فرع دمنهور' }
+    ];
+
+    function loadBranchStatus() {
+      const branchStatus = JSON.parse(localStorage.getItem('branchStatus') || '{}');
+      const container = document.getElementById('branches-container');
+      container.innerHTML = '';
+
+      branches.forEach(branch => {
+        const isOpen = branchStatus[branch.id] !== false; // Default to open if not set
+        const card = document.createElement('div');
+        card.style.cssText = 'background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem; display: flex; justify-content: space-between; align-items: center;';
+        card.innerHTML = `
+          <div>
+            <h3 style="color: #fbbf24; margin: 0 0 0.5rem 0; font-size: 1.2rem;">${branch.name}</h3>
+            <p style="margin: 0; opacity: 0.7; font-size: 0.9rem;">
+              الحالة: <span style="color: ${isOpen ? '#4ade80' : '#ef4444'}; font-weight: 600;">
+                ${isOpen ? 'مفتوح - يمكن الحجز' : 'مغلق - لا يمكن الحجز'}
+              </span>
+            </p>
+          </div>
+          <div>
+            <button 
+              onclick="toggleBranch('${branch.id}')" 
+              class="btn" 
+              style="background: ${isOpen ? 'rgba(239,68,68,0.2)' : 'rgba(34,197,94,0.2)'}; 
+                      color: ${isOpen ? '#ef4444' : '#4ade80'}; 
+                      border: 1px solid ${isOpen ? 'rgba(239,68,68,0.3)' : 'rgba(34,197,94,0.3)'};
+                      min-width: 120px;">
+              ${isOpen ? '✕ إغلاق' : '✓ فتح'}
+            </button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function toggleBranch(branchId) {
+      const branchStatus = JSON.parse(localStorage.getItem('branchStatus') || '{}');
+      // If status is false (closed), set to true (open), otherwise set to false (closed)
+      const currentStatus = branchStatus[branchId] !== false; // Default to open
+      branchStatus[branchId] = !currentStatus; // Toggle status
+      localStorage.setItem('branchStatus', JSON.stringify(branchStatus));
+      loadBranchStatus();
+      
+      const branch = branches.find(b => b.id === branchId);
+      const isOpen = branchStatus[branchId] !== false;
+      alert(`تم ${isOpen ? 'فتح' : 'إغلاق'} ${branch.name} بنجاح`);
+    }
+
+    // Load branch status on page load
+    loadBranchStatus();
+
+    // Discount Codes Management
+    let discountCodes = [];
+
+    function loadDiscountCodes() {
+      try {
+        discountCodes = JSON.parse(localStorage.getItem('discountCodes') || '[]');
+        renderDiscountCodes();
+      } catch (e) {
+        console.error('Error loading discount codes:', e);
+        discountCodes = [];
+      }
+    }
+
+    function saveDiscountCodes() {
+      localStorage.setItem('discountCodes', JSON.stringify(discountCodes));
+      loadDiscountCodes();
+    }
+
+    function renderDiscountCodes() {
+      const container = document.getElementById('discount-codes-list');
+      container.innerHTML = '';
+
+      if (discountCodes.length === 0) {
+        container.innerHTML = '<p style="opacity: 0.7; text-align: center; padding: 2rem;">لا توجد أكواد خصم حالياً</p>';
+        return;
+      }
+
+      discountCodes.forEach((code, index) => {
+        const card = document.createElement('div');
+        card.style.cssText = 'background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem;';
+        card.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <h4 style="color: #fbbf24; margin: 0 0 0.5rem 0; font-size: 1.1rem;">${code.name}</h4>
+              <p style="margin: 0; opacity: 0.8; font-size: 0.95rem;">
+                نسبة الخصم: <span style="color: #4ade80; font-weight: 600;">${code.percentage}%</span>
+              </p>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <button onclick="editDiscountCode(${index})" class="btn" style="background: rgba(251,191,36,0.2); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3);">
+                تعديل
+              </button>
+              <button onclick="deleteDiscountCode(${index})" class="btn btn-danger" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                حذف
+              </button>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function editDiscountCode(index) {
+      const code = discountCodes[index];
+      document.getElementById('discount-name').value = code.name;
+      document.getElementById('discount-percentage').value = code.percentage;
+      document.getElementById('discount-id').value = index;
+      
+      document.getElementById('discount-form').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function deleteDiscountCode(index) {
+      if (!confirm('هل أنت متأكد من حذف كود الخصم هذا؟')) return;
+      
+      discountCodes.splice(index, 1);
+      saveDiscountCodes();
+    }
+
+    function resetDiscountForm() {
+      document.getElementById('discount-form').reset();
+      document.getElementById('discount-id').value = '';
+    }
+
+    // Handle discount form submission
+    document.getElementById('discount-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById('discount-name').value.trim().toUpperCase();
+      const percentage = parseInt(document.getElementById('discount-percentage').value);
+      const id = document.getElementById('discount-id').value;
+
+      // Validate
+      if (!name || !percentage || percentage < 1 || percentage > 100) {
+        alert('يرجى إدخال بيانات صحيحة');
+        return;
+      }
+
+      // Check if code name already exists (when creating new)
+      if (id === '' && discountCodes.some(c => c.name === name)) {
+        alert('كود الخصم هذا موجود بالفعل');
+        return;
+      }
+
+      const discountCode = {
+        name: name,
+        percentage: percentage,
+        createdAt: id !== '' ? discountCodes[id].createdAt : new Date().toISOString()
+      };
+
+      if (id !== '') {
+        // Update existing
+        discountCodes[id] = discountCode;
+      } else {
+        // Add new
+        discountCodes.push(discountCode);
+      }
+
+      saveDiscountCodes();
+      resetDiscountForm();
+      alert(id !== '' ? 'تم تحديث كود الخصم بنجاح' : 'تم إنشاء كود الخصم بنجاح');
+    });
+
+    // Load discount codes on page load
+    loadDiscountCodes();
+
+    // Slider Images Management
+    let sliderImages = [];
+    let uploadedSliderImageBase64 = '';
+    let editingSliderImage = null;
+
+    function handleSliderImageUpload(event) {
+      const file = event.target.files[0];
+      if (!file) {
+        uploadedSliderImageBase64 = '';
+        // If editing, show existing image in preview
+        if (editingSliderImage) {
+          const preview = document.getElementById('slider-image-preview');
+          const previewImg = document.getElementById('slider-preview-img');
+          if (preview && previewImg) {
+            preview.style.display = 'block';
+            previewImg.src = editingSliderImage.image;
+          }
+        } else {
+          const preview = document.getElementById('slider-image-preview');
+          if (preview) preview.style.display = 'none';
+        }
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        uploadedSliderImageBase64 = e.target.result;
+        const preview = document.getElementById('slider-image-preview');
+        const previewImg = document.getElementById('slider-preview-img');
+        if (preview && previewImg) {
+          preview.style.display = 'block';
+          previewImg.src = uploadedSliderImageBase64;
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function loadSliderImages() {
+      try {
+        sliderImages = JSON.parse(localStorage.getItem('sliderImages') || '[]');
+        
+        // If no slider images exist, initialize with default images from HTML
+        if (sliderImages.length === 0) {
+          sliderImages = [
+            { id: 1, image: '/imgs/etra222.jpg', title: '', description: '' },
+            { id: 2, image: '/imgs/493690584_1064379248951068_3791806314464835859_n.jpg', title: 'تشكيلة ساندويتشات', description: 'نكهات متنوعة ترضي الجميع' },
+            { id: 3, image: '/imgs/481107802_1021570963231897_1989374855717209178_n.jpg', title: 'وجبات شهية', description: 'جودة عالية وسعر مناسب' }
+          ];
+          localStorage.setItem('sliderImages', JSON.stringify(sliderImages));
+        }
+        
+        renderSliderImages();
+      } catch (e) {
+        console.error('Error loading slider images:', e);
+        sliderImages = [];
+      }
+    }
+
+    function saveSliderImages() {
+      localStorage.setItem('sliderImages', JSON.stringify(sliderImages));
+      loadSliderImages();
+    }
+
+    function renderSliderImages() {
+      const container = document.getElementById('slider-images-list');
+      container.innerHTML = '';
+
+      if (sliderImages.length === 0) {
+        container.innerHTML = '<p style="opacity: 0.7; text-align: center; padding: 2rem;">لا توجد صور حالياً</p>';
+        return;
+      }
+
+      sliderImages.forEach((slide, index) => {
+        const card = document.createElement('div');
+        card.style.cssText = 'background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem;';
+        card.innerHTML = `
+          <div style="display: grid; grid-template-columns: 200px 1fr auto; gap: 1.5rem; align-items: center;">
+            <div>
+              <img src="${slide.image}" alt="Slider ${index + 1}" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'200\\' height=\\'120\\'%3E%3Crect fill=\\'%23333\\' width=\\'200\\' height=\\'120\\'/%3E%3Ctext fill=\\'%23999\\' x=\\'50%25\\' y=\\'50%25\\' text-anchor=\\'middle\\' dy=\\'.3em\\'%3ENo Image%3C/text%3E%3C/svg%3E'">
+            </div>
+            <div>
+              <h4 style="color: #fbbf24; margin: 0 0 0.5rem 0; font-size: 1.1rem;">${slide.title || 'بدون عنوان'}</h4>
+              <p style="margin: 0; opacity: 0.8; font-size: 0.9rem; margin-bottom: 0.5rem;">${slide.description || 'بدون وصف'}</p>
+              <p style="margin: 0; opacity: 0.6; font-size: 0.85rem;">الترتيب: ${index + 1}</p>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; min-width: 150px;">
+              <div style="display: flex; gap: 0.5rem;">
+                <button onclick="moveSliderUp(${index})" class="btn" style="background: rgba(251,191,36,0.2); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); padding: 0.5rem; font-size: 0.85rem;" ${index === 0 ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
+                  ⬆️
+                </button>
+                <button onclick="moveSliderDown(${index})" class="btn" style="background: rgba(251,191,36,0.2); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); padding: 0.5rem; font-size: 0.85rem;" ${index === sliderImages.length - 1 ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
+                  ⬇️
+                </button>
+              </div>
+              <button onclick="editSliderImage(${index})" class="btn" style="background: rgba(251,191,36,0.2); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); font-size: 0.9rem; padding: 0.5rem 1rem;">
+                تعديل
+              </button>
+              <button onclick="deleteSliderImage(${index})" class="btn btn-danger" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                حذف
+              </button>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function moveSliderUp(index) {
+      if (index === 0) return;
+      [sliderImages[index - 1], sliderImages[index]] = [sliderImages[index], sliderImages[index - 1]];
+      saveSliderImages();
+    }
+
+    function moveSliderDown(index) {
+      if (index === sliderImages.length - 1) return;
+      [sliderImages[index], sliderImages[index + 1]] = [sliderImages[index + 1], sliderImages[index]];
+      saveSliderImages();
+    }
+
+    function editSliderImage(index) {
+      const slide = sliderImages[index];
+      editingSliderImage = slide;
+      document.getElementById('slider-title').value = slide.title || '';
+      document.getElementById('slider-description').value = slide.description || '';
+      document.getElementById('slider-id').value = index;
+      document.getElementById('slider-image').value = '';
+      document.getElementById('slider-image').removeAttribute('required');
+      document.getElementById('slider-image-required').textContent = '';
+      document.getElementById('slider-image-help').textContent = 'يمكنك ترك الحقل فارغاً للاحتفاظ بالصورة الحالية أو اختيار صورة جديدة';
+      
+      // Clear uploaded image (user needs to upload new one if they want to change it)
+      uploadedSliderImageBase64 = '';
+      
+      // Show existing image in preview
+      const preview = document.getElementById('slider-image-preview');
+      const previewImg = document.getElementById('slider-preview-img');
+      if (preview && previewImg) {
+        preview.style.display = 'block';
+        previewImg.src = slide.image;
+      }
+      
+      document.getElementById('slider-form').querySelector('button[type="submit"]').textContent = 'تحديث الصورة';
+      document.getElementById('slider-form').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function deleteSliderImage(index) {
+      if (!confirm('هل أنت متأكد من حذف هذه الصورة؟')) return;
+      sliderImages.splice(index, 1);
+      saveSliderImages();
+    }
+
+    function resetSliderForm() {
+      document.getElementById('slider-form').reset();
+      document.getElementById('slider-id').value = '';
+      document.getElementById('slider-image-preview').style.display = 'none';
+      uploadedSliderImageBase64 = '';
+      editingSliderImage = null;
+      document.getElementById('slider-image').setAttribute('required', 'required');
+      document.getElementById('slider-image-required').textContent = '*';
+      document.getElementById('slider-image-help').textContent = 'اختر صورة جديدة أو استخدم الصورة الحالية عند التعديل';
+      document.getElementById('slider-form').querySelector('button[type="submit"]').textContent = 'إضافة صورة';
+    }
+
+    // Handle slider form submission
+    document.getElementById('slider-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const title = document.getElementById('slider-title').value.trim();
+      const description = document.getElementById('slider-description').value.trim();
+      const id = document.getElementById('slider-id').value;
+      const imageInput = document.getElementById('slider-image');
+      
+      // Use uploaded base64 image or existing image from editing
+      let image = uploadedSliderImageBase64;
+      
+      // If editing and no new image uploaded, use existing image
+      if (!image && editingSliderImage) {
+        image = editingSliderImage.image;
+      }
+      
+      // If creating new and no image, show error
+      if (!image && id === '') {
+        alert('يرجى رفع صورة');
+        return;
+      }
+
+      const slideData = {
+        id: editingSliderImage ? editingSliderImage.id : Date.now(),
+        image: image,
+        title: title,
+        description: description
+      };
+
+      if (id !== '') {
+        // Update existing
+        sliderImages[id] = slideData;
+      } else {
+        // Add new
+        sliderImages.push(slideData);
+      }
+
+      saveSliderImages();
+      resetSliderForm();
+      alert(id !== '' ? 'تم تحديث الصورة بنجاح' : 'تم إضافة الصورة بنجاح');
+    });
+
+    // Load slider images on page load
+    loadSliderImages();
+
+    // Orders Management
+    let allOrders = [];
+    let currentFilter = 'all';
+    let currentSearch = '';
+
+    function loadOrders() {
+      try {
+        allOrders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+        // Sort orders by date (newest first)
+        allOrders.sort((a, b) => {
+          const dateA = new Date(a.createdAt || a.id || 0);
+          const dateB = new Date(b.createdAt || b.id || 0);
+          return dateB - dateA;
+        });
+        renderOrders();
+        updateOrderStats();
+      } catch (e) {
+        console.error('Error loading orders:', e);
+        allOrders = [];
+        renderOrders();
+      }
+    }
+
+    function formatDate(dateString) {
+      if (!dateString) return 'تاريخ غير محدد';
+      try {
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffTime = Math.abs(now - date);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        if (diffDays === 1) {
+          return 'أمس';
+        } else if (diffDays === 0) {
+          return 'اليوم';
+        } else if (diffDays < 7) {
+          return `منذ ${diffDays} أيام`;
+        }
+        
+        return date.toLocaleDateString('ar-EG', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      } catch (e) {
+        return dateString;
+      }
+    }
+
+    function isToday(dateString) {
+      if (!dateString) return false;
+      try {
+        const date = new Date(dateString);
+        const today = new Date();
+        return date.getDate() === today.getDate() &&
+               date.getMonth() === today.getMonth() &&
+               date.getFullYear() === today.getFullYear();
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function isThisWeek(dateString) {
+      if (!dateString) return false;
+      try {
+        const date = new Date(dateString);
+        const today = new Date();
+        const diffTime = Math.abs(today - date);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays <= 7;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function filterOrders(filterType) {
+      currentFilter = filterType;
+      
+      // Update filter buttons
+      document.querySelectorAll('[id^="filter-"]').forEach(btn => {
+        btn.style.background = 'rgba(255,255,255,0.1)';
+        btn.style.color = '#fff';
+        btn.style.border = '1px solid rgba(255,255,255,0.2)';
+      });
+      const activeBtn = document.getElementById(`filter-${filterType}`);
+      if (activeBtn) {
+        activeBtn.style.background = 'rgba(251,191,36,0.2)';
+        activeBtn.style.color = '#fbbf24';
+        activeBtn.style.border = '1px solid rgba(251,191,36,0.3)';
+      }
+      
+      renderOrders();
+    }
+
+    function searchOrders() {
+      currentSearch = document.getElementById('order-search').value.toLowerCase().trim();
+      renderOrders();
+    }
+
+    function getFilteredOrders() {
+      let filtered = allOrders;
+      
+      // Apply date filter
+      if (currentFilter === 'today') {
+        filtered = filtered.filter(order => isToday(order.createdAt));
+      } else if (currentFilter === 'week') {
+        filtered = filtered.filter(order => isThisWeek(order.createdAt));
+      }
+      
+      // Apply search filter
+      if (currentSearch) {
+        filtered = filtered.filter(order => {
+          const name = (order.customer?.name || '').toLowerCase();
+          const phone = (order.customer?.phone || '').toLowerCase();
+          return name.includes(currentSearch) || phone.includes(currentSearch);
+        });
+      }
+      
+      return filtered;
+    }
+
+    function renderOrders() {
+      const container = document.getElementById('orders-list');
+      const filteredOrders = getFilteredOrders();
+      
+      container.innerHTML = '';
+      
+      if (filteredOrders.length === 0) {
+        container.innerHTML = '<p style="opacity: 0.7; text-align: center; padding: 3rem;">لا توجد طلبات</p>';
+        return;
+      }
+      
+      filteredOrders.forEach((order, index) => {
+        const orderCard = document.createElement('div');
+        orderCard.style.cssText = 'background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem;';
+        
+        // Calculate items count
+        const itemsCount = order.items.reduce((sum, item) => sum + item.qty, 0);
+        
+        orderCard.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+            <div style="flex: 1;">
+              <h3 style="color: #fbbf24; margin: 0 0 0.5rem 0; font-size: 1.25rem;">طلب #${order.id}</h3>
+              <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                <strong>الاسم:</strong> ${order.customer?.name || 'غير محدد'}
+              </p>
+              <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                <strong>الهاتف:</strong> ${order.customer?.phone || 'غير محدد'}
+              </p>
+              <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                <strong>العنوان:</strong> ${order.customer?.address || 'غير محدد'}
+              </p>
+              <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                <strong>الفرع:</strong> ${order.branch || order.customer?.branch || 'غير محدد'}
+              </p>
+              <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                <strong>طريقة الدفع:</strong> ${order.customer?.payment === 'cash' ? 'نقدي' : 'بطاقة'}
+              </p>
+            </div>
+            <div style="text-align: left;">
+              <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                <strong>التاريخ:</strong> ${formatDate(order.createdAt)}
+              </p>
+              <p style="margin: 0.5rem 0 0 0; font-size: 1.5rem; font-weight: 700; color: #4ade80;">
+                ${order.total?.toFixed(2) || '0.00'} L.E
+              </p>
+            </div>
+          </div>
+          
+          <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem; margin-top: 1rem;">
+            <h4 style="color: #fbbf24; margin: 0 0 1rem 0; font-size: 1rem;">المنتجات (${itemsCount} عنصر)</h4>
+            <div style="display: grid; gap: 0.75rem;">
+              ${order.items.map(item => {
+                const displayName = item.name + (item.comboInfo || '');
+                const notesDisplay = item.notes ? `<div style="font-size: 0.85rem; opacity: 0.7; font-style: italic; margin-top: 0.25rem; padding-inline-start: 1rem;">📝 ${item.notes}</div>` : '';
+                return `
+                  <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                    <div style="flex: 1;">
+                      <div style="font-weight: 600; margin-bottom: 0.25rem;">${displayName}</div>
+                      <div style="font-size: 0.9rem; opacity: 0.8;">
+                        <span>المقاس: ${item.size || 'غير محدد'}</span>
+                        <span style="margin-inline-start: 1rem;">الكمية: ${item.qty}</span>
+                      </div>
+                      ${notesDisplay}
+                    </div>
+                    <div style="text-align: left; font-weight: 600; color: #fbbf24;">
+                      ${(item.price * item.qty).toFixed(2)} L.E
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+          
+          ${order.discount ? `
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem; margin-top: 1rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="font-size: 0.9rem; opacity: 0.8;">
+                  <strong>المجموع الفرعي:</strong> ${order.subtotal?.toFixed(2) || order.items.reduce((s, it) => s + it.price * it.qty, 0).toFixed(2)} L.E
+                </div>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
+                <div style="font-size: 0.9rem; color: #4ade80;">
+                  <strong>الخصم (${order.discount.code} - ${order.discount.percentage}%):</strong> -${order.discount.amount?.toFixed(2) || '0.00'} L.E
+                </div>
+              </div>
+            </div>
+          ` : ''}
+          
+          <div style="border-top: 2px solid rgba(251,191,36,0.3); padding-top: 1rem; margin-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-size: 1.1rem; font-weight: 700; color: #fbbf24;">
+              الإجمالي الكلي
+            </div>
+            <div style="font-size: 1.5rem; font-weight: 700; color: #4ade80;">
+              ${order.total?.toFixed(2) || '0.00'} L.E
+            </div>
+          </div>
+        `;
+        
+        container.appendChild(orderCard);
+      });
+    }
+
+    function updateOrderStats() {
+      const totalOrders = allOrders.length;
+      const totalRevenue = allOrders.reduce((sum, order) => sum + (order.total || 0), 0);
+      const todayOrdersCount = allOrders.filter(order => isToday(order.createdAt)).length;
+      
+      document.getElementById('total-orders').textContent = totalOrders;
+      document.getElementById('total-revenue').textContent = totalRevenue.toFixed(2) + ' L.E';
+      document.getElementById('today-orders').textContent = todayOrdersCount;
+    }
+
+    // Set up search functionality
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById('order-search');
+      if (searchInput) {
+        searchInput.addEventListener('input', searchOrders);
+      }
+    });
+
+    // Reservations Management in Dashboard
+    let allDashboardReservations = [];
+    let currentDashboardReservationsFilter = 'all';
+    let currentDashboardReservationsSearch = '';
+
+    function loadDashboardReservations() {
+      try {
+        allDashboardReservations = JSON.parse(localStorage.getItem('reservations') || '[]');
+        allDashboardReservations.sort((a, b) => {
+          const dateA = new Date(a.date || a.createdAt || a.id || 0);
+          const dateB = new Date(b.date || b.createdAt || b.id || 0);
+          return dateB - dateA;
+        });
+        renderDashboardReservations();
+        updateDashboardReservationsStats();
+      } catch (e) {
+        console.error('Error loading reservations:', e);
+        allDashboardReservations = [];
+        renderDashboardReservations();
+      }
+    }
+
+    function formatReservationDate(dateString) {
+      if (!dateString) return 'تاريخ غير محدد';
+      try {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('ar-EG', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+      } catch (e) {
+        return dateString;
+      }
+    }
+
+    function isReservationToday(dateString) {
+      if (!dateString) return false;
+      try {
+        const date = new Date(dateString);
+        const today = new Date();
+        return date.getDate() === today.getDate() &&
+               date.getMonth() === today.getMonth() &&
+               date.getFullYear() === today.getFullYear();
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function filterDashboardReservations(filterType) {
+      currentDashboardReservationsFilter = filterType;
+      
+      // Update filter buttons
+      document.querySelectorAll('[id^="dashboard-filter-"][id$="-reservations"]').forEach(btn => {
+        btn.style.background = 'rgba(255,255,255,0.1)';
+        btn.style.color = '#fff';
+        btn.style.border = '1px solid rgba(255,255,255,0.2)';
+      });
+      const activeBtn = document.getElementById(`dashboard-filter-${filterType}-reservations`);
+      if (activeBtn) {
+        activeBtn.style.background = 'rgba(251,191,36,0.2)';
+        activeBtn.style.color = '#fbbf24';
+        activeBtn.style.border = '1px solid rgba(251,191,36,0.3)';
+      }
+      
+      renderDashboardReservations();
+    }
+
+    function searchDashboardReservations() {
+      currentDashboardReservationsSearch = document.getElementById('dashboard-reservation-search').value.toLowerCase().trim();
+      renderDashboardReservations();
+    }
+
+    function getFilteredDashboardReservations() {
+      let filtered = allDashboardReservations;
+      
+      if (currentDashboardReservationsFilter === 'pending') {
+        filtered = filtered.filter(res => res.status === 'pending');
+      } else if (currentDashboardReservationsFilter === 'confirmed') {
+        filtered = filtered.filter(res => res.status === 'confirmed');
+      } else if (currentDashboardReservationsFilter === 'today') {
+        filtered = filtered.filter(res => isReservationToday(res.date));
+      }
+      
+      if (currentDashboardReservationsSearch) {
+        filtered = filtered.filter(res => {
+          const name = (res.name || '').toLowerCase();
+          const phone = (res.phone || '').toLowerCase();
+          return name.includes(currentDashboardReservationsSearch) || phone.includes(currentDashboardReservationsSearch);
+        });
+      }
+      
+      return filtered;
+    }
+
+    function renderDashboardReservations() {
+      const container = document.getElementById('dashboard-reservations-list');
+      const filteredReservations = getFilteredDashboardReservations();
+      
+      if (!container) return;
+      
+      container.innerHTML = '';
+      
+      if (filteredReservations.length === 0) {
+        container.innerHTML = '<p style="opacity: 0.7; text-align: center; padding: 3rem;">لا توجد حجوزات</p>';
+        return;
+      }
+      
+      filteredReservations.forEach((reservation) => {
+        const reservationCard = document.createElement('div');
+        reservationCard.style.cssText = 'background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem;';
+        
+        const statusColor = reservation.status === 'confirmed' ? '#4ade80' : reservation.status === 'cancelled' ? '#ef4444' : '#fbbf24';
+        const statusText = reservation.status === 'confirmed' ? 'مؤكد' : reservation.status === 'cancelled' ? 'ملغي' : 'قيد الانتظار';
+        const itemsCount = reservation.items ? reservation.items.reduce((sum, item) => sum + item.qty, 0) : 0;
+        
+        reservationCard.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+            <div style="flex: 1;">
+              <h3 style="color: #fbbf24; margin: 0 0 0.5rem 0; font-size: 1.25rem;">حجز #${reservation.id}</h3>
+              <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                <strong>الاسم:</strong> ${reservation.name || 'غير محدد'}
+              </p>
+              <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                <strong>الهاتف:</strong> ${reservation.phone || 'غير محدد'}
+              </p>
+              <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                <strong>الفرع:</strong> ${reservation.branch || 'غير محدد'}
+              </p>
+              <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                <strong>التاريخ:</strong> ${formatReservationDate(reservation.date)}
+              </p>
+              <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                <strong>الوقت:</strong> ${reservation.time || 'غير محدد'}
+              </p>
+              <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                <strong>عدد الضيوف:</strong> ${reservation.guests || 0}
+              </p>
+              ${reservation.notes ? `
+                <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                  <strong>ملاحظات:</strong> ${reservation.notes}
+                </p>
+              ` : ''}
+            </div>
+            <div style="text-align: left;">
+              <p style="margin: 0.25rem 0; opacity: 0.8; font-size: 0.9rem;">
+                <strong>الحالة:</strong> <span style="color: ${statusColor}; font-weight: 600;">${statusText}</span>
+              </p>
+              ${reservation.total ? `
+                <p style="margin: 0.5rem 0 0 0; font-size: 1.5rem; font-weight: 700; color: #4ade80;">
+                  ${reservation.total.toFixed(2)} L.E
+                </p>
+              ` : ''}
+            </div>
+          </div>
+          
+          ${reservation.items && reservation.items.length > 0 ? `
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem; margin-top: 1rem;">
+              <h4 style="color: #fbbf24; margin: 0 0 1rem 0; font-size: 1rem;">المنتجات (${itemsCount} عنصر)</h4>
+              <div style="display: grid; gap: 0.75rem;">
+                ${reservation.items.map(item => {
+                  return `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                      <div style="flex: 1;">
+                        <div style="font-weight: 600; margin-bottom: 0.25rem;">${item.name}</div>
+                        <div style="font-size: 0.9rem; opacity: 0.8;">
+                          <span>المقاس: ${item.size || 'غير محدد'}</span>
+                          <span style="margin-inline-start: 1rem;">الكمية: ${item.qty}</span>
+                        </div>
+                      </div>
+                      <div style="text-align: left; font-weight: 600; color: #fbbf24;">
+                        ${(item.price * item.qty).toFixed(2)} L.E
+                      </div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          ` : ''}
+          
+          <div style="border-top: 2px solid rgba(251,191,36,0.3); padding-top: 1rem; margin-top: 1rem; display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;">
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              ${reservation.status !== 'confirmed' ? `
+                <button onclick="updateDashboardReservationStatus(${reservation.id}, 'confirmed')" style="padding: 0.5rem 1rem; background: #22c55e; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">✓ تأكيد</button>
+              ` : ''}
+              ${reservation.status !== 'cancelled' ? `
+                <button onclick="updateDashboardReservationStatus(${reservation.id}, 'cancelled')" style="padding: 0.5rem 1rem; background: #ef4444; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">✕ إلغاء</button>
+              ` : ''}
+              ${reservation.status === 'confirmed' ? `
+                <button onclick="updateDashboardReservationStatus(${reservation.id}, 'pending')" style="padding: 0.5rem 1rem; background: #fbbf24; color: #000; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">↻ إعادة للانتظار</button>
+              ` : ''}
+            </div>
+            ${reservation.total ? `
+              <div style="font-size: 1.5rem; font-weight: 700; color: #4ade80;">
+                ${reservation.total.toFixed(2)} L.E
+              </div>
+            ` : ''}
+          </div>
+        `;
+        
+        container.appendChild(reservationCard);
+      });
+    }
+
+    function updateDashboardReservationsStats() {
+      const totalReservations = allDashboardReservations.length;
+      const pendingCount = allDashboardReservations.filter(res => res.status === 'pending').length;
+      const confirmedCount = allDashboardReservations.filter(res => res.status === 'confirmed').length;
+      const todayCount = allDashboardReservations.filter(res => isReservationToday(res.date)).length;
+      
+      const totalEl = document.getElementById('dashboard-total-reservations');
+      const pendingEl = document.getElementById('dashboard-pending-reservations');
+      const confirmedEl = document.getElementById('dashboard-confirmed-reservations');
+      const todayEl = document.getElementById('dashboard-today-reservations');
+      
+      if (totalEl) totalEl.textContent = totalReservations;
+      if (pendingEl) pendingEl.textContent = pendingCount;
+      if (confirmedEl) confirmedEl.textContent = confirmedCount;
+      if (todayEl) todayEl.textContent = todayCount;
+    }
+
+    function updateDashboardReservationStatus(reservationId, newStatus) {
+      const reservation = allDashboardReservations.find(r => r.id === reservationId);
+      if (!reservation) return;
+      
+      reservation.status = newStatus;
+      
+      // Save to localStorage
+      try {
+        localStorage.setItem('reservations', JSON.stringify(allDashboardReservations));
+        renderDashboardReservations();
+        updateDashboardReservationsStats();
+      } catch (e) {
+        console.error('Error updating reservation:', e);
+        alert('حدث خطأ في تحديث الحجز');
+      }
+    }
+
+    // Tab switching for dashboard
+    function switchDashboardTab(tabName) {
+      const ordersTab = document.getElementById('dashboard-tab-orders');
+      const reservationsTab = document.getElementById('dashboard-tab-reservations');
+      const ordersContent = document.getElementById('dashboard-orders-tab-content');
+      const reservationsContent = document.getElementById('dashboard-reservations-tab-content');
+      
+      if (tabName === 'orders') {
+        ordersTab.style.background = 'rgba(251,191,36,0.2)';
+        ordersTab.style.borderBottom = '2px solid #fbbf24';
+        ordersTab.style.color = '#fbbf24';
+        reservationsTab.style.background = 'transparent';
+        reservationsTab.style.borderBottom = '2px solid transparent';
+        reservationsTab.style.color = '#fff';
+        ordersContent.style.display = 'block';
+        reservationsContent.style.display = 'none';
+      } else {
+        reservationsTab.style.background = 'rgba(251,191,36,0.2)';
+        reservationsTab.style.borderBottom = '2px solid #fbbf24';
+        reservationsTab.style.color = '#fbbf24';
+        ordersTab.style.background = 'transparent';
+        ordersTab.style.borderBottom = '2px solid transparent';
+        ordersTab.style.color = '#fff';
+        ordersContent.style.display = 'none';
+        reservationsContent.style.display = 'block';
+        loadDashboardReservations();
+      }
+    }
+
+    // Set up search functionality for reservations
+    document.addEventListener('DOMContentLoaded', () => {
+      const reservationSearchInput = document.getElementById('dashboard-reservation-search');
+      if (reservationSearchInput) {
+        reservationSearchInput.addEventListener('input', searchDashboardReservations);
+      }
+    });
+
+    // Make functions global
+    window.filterDashboardReservations = filterDashboardReservations;
+    window.updateDashboardReservationStatus = updateDashboardReservationStatus;
+    window.switchDashboardTab = switchDashboardTab;
+  </script>
+</body>
+</html>
+

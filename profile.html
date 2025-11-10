@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+  <title>الملف الشخصي - 3etra</title>
+  <link href="src/output.css" rel="stylesheet">
+  <style>
+    .container { max-width: 1100px; margin: 0 auto; padding: 1rem; }
+    .card { background: linear-gradient(180deg, rgba(0,0,0,0.95), rgba(0,0,0,0.98)); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 1rem; }
+    .grid { display: grid; gap: 1rem; }
+    @media (min-width: 768px){ .grid-cols-2{ grid-template-columns: 1fr 1fr; } }
+    label { display:block; margin-bottom: .25rem; opacity:.9; }
+    input, textarea { width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); color:#fff; border-radius:10px; padding:.6rem .75rem; }
+    .btn { background: var(--color-amber-500); color:#000; padding:.6rem 1rem; border-radius:10px; font-weight:700; border:1px solid oklch(76.9% 0.188 70.08 / .5); }
+    .list { display:grid; gap:.75rem; }
+    .order { border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:.75rem; background: rgba(255,255,255,0.03); }
+    .order-head { display:flex; justify-content: space-between; align-items:center; margin-bottom:.5rem; color: var(--color-amber-500); font-weight:700; }
+    .items { display:grid; gap:.25rem; font-size:.95rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 style="color:var(--color-amber-500); margin: .5rem 0 1rem;">الملف الشخصي</h1>
+
+    <div class="grid grid-cols-2">
+      <section class="card">
+        <h2 style="margin-bottom:.75rem;">بيانات العميل</h2>
+        <div class="grid" style="gap:.75rem;">
+          <div>
+            <label for="prof-name">الاسم</label>
+            <input id="prof-name" type="text" placeholder="اسمك" />
+          </div>
+          <div>
+            <label for="prof-phone">الهاتف</label>
+            <input id="prof-phone" type="tel" placeholder="01xxxxxxxxx" />
+          </div>
+          <div>
+            <label for="prof-address">العنوان</label>
+            <textarea id="prof-address" rows="3" placeholder="عنوان التوصيل"></textarea>
+          </div>
+          <div style="display:flex; gap:.5rem;">
+            <button id="prof-save" class="btn">حفظ</button>
+            <button id="prof-clear" class="btn" style="background:#222; color:#fff; border-color: rgba(255,255,255,0.15);">مسح</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 style="margin-bottom:.75rem;">أحدث الطلبات</h2>
+        <div id="orders" class="list"></div>
+      </section>
+    </div>
+
+    <div class="grid" style="margin-top: 1rem;">
+      <section class="card">
+        <h2 style="margin-bottom:.75rem;">حجوزات الطاولات</h2>
+        <div id="reservations" class="list"></div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // Load profile from userSession
+    function loadProfile(){
+      try{
+        const sessionJson = localStorage.getItem('userSession');
+        if(sessionJson){
+          const s = JSON.parse(sessionJson);
+          document.getElementById('prof-name').value = s.username || '';
+        }
+        const prof = JSON.parse(localStorage.getItem('profile') || '{}');
+        if(prof.phone) document.getElementById('prof-phone').value = prof.phone;
+        if(prof.address) document.getElementById('prof-address').value = prof.address;
+      }catch{}
+    }
+
+    function saveProfile(){
+      const name = document.getElementById('prof-name').value.trim();
+      const phone = document.getElementById('prof-phone').value.trim();
+      const address = document.getElementById('prof-address').value.trim();
+      // update session name too
+      try{
+        const sessionJson = localStorage.getItem('userSession');
+        if(sessionJson){ const s = JSON.parse(sessionJson); s.username = name || s.username; localStorage.setItem('userSession', JSON.stringify(s)); }
+      }catch{}
+      localStorage.setItem('profile', JSON.stringify({ name, phone, address }));
+      alert('تم الحفظ');
+    }
+
+    function clearProfile(){
+      if(confirm('هل أنت متأكد من مسح البيانات؟')) {
+        localStorage.removeItem('profile');
+        // Clear all input fields
+        document.getElementById('prof-name').value = '';
+        document.getElementById('prof-phone').value = '';
+        document.getElementById('prof-address').value = '';
+        // Reload to get username from session if exists
+        loadProfile();
+      }
+    }
+
+    function loadOrders(){
+      const container = document.getElementById('orders');
+      container.innerHTML = '';
+      let orders = [];
+      try { orders = JSON.parse(localStorage.getItem('orderHistory') || '[]'); } catch {}
+      if(!orders.length){ container.innerHTML = '<div style="opacity:.8">لا توجد طلبات بعد</div>'; return; }
+      orders.slice(0,10).forEach(o => {
+        const div = document.createElement('div');
+        div.className = 'order';
+        const date = new Date(o.createdAt || o.id).toLocaleString();
+        div.innerHTML = `
+          <div class="order-head"><span>#${o.id}</span><span>${date}</span><span>${o.total} L.E</span></div>
+          <div class="items">${o.items.map(it => `<div>- ${it.name} (${it.size}) × ${it.qty} — ${it.price} L.E</div>`).join('')}</div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function loadReservations(){
+      const container = document.getElementById('reservations');
+      container.innerHTML = '';
+      let reservations = [];
+      try { reservations = JSON.parse(localStorage.getItem('reservations') || '[]'); } catch {}
+      if(!reservations.length){ container.innerHTML = '<div style="opacity:.8">لا توجد حجوزات بعد</div>'; return; }
+      reservations.slice(0,10).forEach(r => {
+        const div = document.createElement('div');
+        div.className = 'order';
+        const resDate = new Date(r.date).toLocaleDateString('ar-EG');
+        const createdDate = new Date(r.createdAt || r.id).toLocaleString();
+        const statusColor = r.status === 'confirmed' ? '#4ade80' : r.status === 'cancelled' ? '#ef4444' : '#fbbf24';
+        const statusText = r.status === 'confirmed' ? 'مؤكد' : r.status === 'cancelled' ? 'ملغي' : 'قيد الانتظار';
+        div.innerHTML = `
+          <div class="order-head">
+            <span>#${r.id}</span>
+            <span style="color:${statusColor}">${statusText}</span>
+            ${r.total ? `<span>${r.total} L.E</span>` : ''}
+          </div>
+          <div class="items">
+            <div><strong>الاسم:</strong> ${r.name}</div>
+            <div><strong>الهاتف:</strong> ${r.phone}</div>
+            <div><strong>التاريخ:</strong> ${resDate}</div>
+            <div><strong>الوقت:</strong> ${r.time}</div>
+            <div><strong>عدد الأشخاص:</strong> ${r.guests}</div>
+            <div><strong>الفرع:</strong> ${r.branch}</div>
+            ${r.items && r.items.length > 0 ? `
+              <div style="margin-top:0.75rem; padding-top:0.75rem; border-top:1px solid rgba(255,255,255,0.1);">
+                <strong>الطلبات:</strong>
+                ${r.items.map(it => `<div style="margin-top:0.25rem;">- ${it.name} (${it.size}) × ${it.qty} — ${it.price * it.qty} L.E</div>`).join('')}
+              </div>
+            ` : ''}
+            ${r.notes ? `<div><strong>ملاحظات:</strong> ${r.notes}</div>` : ''}
+            <div style="opacity:0.7; font-size:0.85rem; margin-top:0.5rem;">تم الحجز: ${createdDate}</div>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    document.getElementById('prof-save').addEventListener('click', saveProfile);
+    document.getElementById('prof-clear').addEventListener('click', clearProfile);
+    loadProfile();
+    loadOrders();
+    loadReservations();
+  </script>
+</body>
+</html>
+
