@@ -1027,6 +1027,7 @@ footer .info a:hover svg {
     width: 100%;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
   }
   .pay-option {
     width: 100%;
@@ -1034,10 +1035,22 @@ footer .info a:hover svg {
     flex: none;
     white-space: normal;
     overflow: hidden;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    box-sizing: border-box;
+    text-align: right;
+    direction: rtl;
+    justify-content: flex-end;
   }
   .checkout-body .field {
     width: 100%;
     overflow: hidden;
+    box-sizing: border-box;
+    padding: 0;
+  }
+  .checkout-body .field > label {
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 
