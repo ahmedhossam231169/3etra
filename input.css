@@ -949,7 +949,13 @@ footer .info a:hover svg {
   border-color: var(--color-amber-500); 
   box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.15); 
 }
-.pay-options { display: flex; gap: 1rem; flex-wrap: wrap; }
+.pay-options { 
+  display: flex; 
+  gap: 1rem; 
+  flex-wrap: wrap; 
+  width: 100%;
+  box-sizing: border-box;
+}
 .pay-option { 
   background: rgba(255,255,255,0.04); 
   border: 1px solid rgba(255,255,255,0.08); 
@@ -961,6 +967,12 @@ footer .info a:hover svg {
   cursor: pointer;
   flex: 1;
   min-width: 120px;
+  width: 100%;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+.pay-option input[type="radio"] {
+  flex-shrink: 0;
 }
 .pay-option:hover { background: rgba(255,255,255,0.08); }
 .checkout-errors { color: #fca5a5; min-height: 20px; padding: 2px 0; font-size: 0.9rem; }
@@ -1012,14 +1024,20 @@ footer .info a:hover svg {
   }
   .pay-options {
     flex-direction: column;
-    gap: 0.75rem;
+    width: 100%;
+    margin: 0;
+    padding: 0;
   }
   .pay-option {
     width: 100%;
+    min-width: auto;
     flex: none;
-    min-width: unset;
-    padding: 0.75rem 1rem;
-    font-size: 0.95rem;
+    white-space: normal;
+    overflow: hidden;
+  }
+  .checkout-body .field {
+    width: 100%;
+    overflow: hidden;
   }
 }
 

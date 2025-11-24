@@ -1588,6 +1588,8 @@ footer .info a:hover svg {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
+  width: 100%;
+  box-sizing: border-box;
 }
 .pay-option {
   background: rgba(255,255,255,0.04);
@@ -1600,6 +1602,12 @@ footer .info a:hover svg {
   cursor: pointer;
   flex: 1;
   min-width: 120px;
+  width: 100%;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+.pay-option input[type="radio"] {
+  flex-shrink: 0;
 }
 .pay-option:hover {
   background: rgba(255,255,255,0.08);
@@ -1661,9 +1669,20 @@ footer .info a:hover svg {
   }
   .pay-options {
     flex-direction: column;
+    width: 100%;
+    margin: 0;
+    padding: 0;
   }
   .pay-option {
     width: 100%;
+    min-width: auto;
+    flex: none;
+    white-space: normal;
+    overflow: hidden;
+  }
+  .checkout-body .field {
+    width: 100%;
+    overflow: hidden;
   }
 }
 @media (max-width: 480px) {
