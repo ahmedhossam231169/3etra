@@ -1585,32 +1585,48 @@ footer .info a:hover svg {
   box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.15);
 }
 .pay-options {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
   width: 100%;
   box-sizing: border-box;
 }
 .pay-option {
   background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 10px;
-  padding: 0.5rem 0.75rem;
+  border: 2px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 0.875rem 1rem;
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: flex-start;
+  gap: 0.75rem;
   cursor: pointer;
-  flex: 1;
-  min-width: 120px;
-  width: 100%;
+  transition: all var(--transition-base);
+  position: relative;
+  min-height: 48px;
   box-sizing: border-box;
-  white-space: nowrap;
 }
 .pay-option input[type="radio"] {
   flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--color-amber-500);
+  margin: 0;
 }
 .pay-option:hover {
   background: rgba(255,255,255,0.08);
+  border-color: rgba(251,191,36,0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.pay-option:has(input[type="radio"]:checked) {
+  background: rgba(251,191,36,0.15);
+  border-color: var(--color-amber-500);
+  box-shadow: 0 0 0 3px rgba(251,191,36,0.2);
+}
+.pay-option:active {
+  transform: translateY(0);
 }
 .checkout-errors {
   color: #fca5a5;
@@ -1668,34 +1684,28 @@ footer .info a:hover svg {
     padding: 0.875rem 1rem;
   }
   .pay-options {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    gap: 0.625rem;
     width: 100%;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
   }
   .pay-option {
     width: 100%;
     min-width: auto;
     flex: none;
-    white-space: normal;
-    overflow: hidden;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    box-sizing: border-box;
-    text-align: right;
-    direction: rtl;
-    justify-content: flex-end;
+    padding: 1rem;
+    min-height: 52px;
+    gap: 0.875rem;
+    font-size: 0.95rem;
+  }
+  .pay-option input[type="radio"] {
+    width: 22px;
+    height: 22px;
   }
   .checkout-body .field {
     width: 100%;
     overflow: hidden;
-    box-sizing: border-box;
-    padding: 0;
-  }
-  .checkout-body .field > label {
-    width: 100%;
-    box-sizing: border-box;
   }
 }
 @media (max-width: 480px) {
